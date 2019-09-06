@@ -1,7 +1,5 @@
 <template>
   <div>
-    <div class="test"></div>
-    <div class="test2"></div>
     <div class="main">
       <nuxt />
     </div>
@@ -47,6 +45,12 @@ export default {
     object-fit: contain;
     object-position: center;
   }
+}
+.back_box{
+  background-size: cover;
+  background-color: white;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 /* 两行省略号 */
 .ellipsis_2{
