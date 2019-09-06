@@ -1,0 +1,2 @@
+static/*.js
+assset/*.js
