@@ -1,7 +1,7 @@
 <template>
-  <!-- toast弹窗 -->
+  <!-- toast弹窗 父组件传值 showMsg: { toast: true }, message: "已完成" -->
   <div id="myToast" v-show="isShow.toast">
-    <div class="toast_transparent"></div>
+    <div class="toast_transparent" @click="isShow.toast = false"></div>
     <div class="toast-con">
       <p class="toast__content">{{message}}</p>
     </div>
@@ -18,7 +18,16 @@ export default {
     isShow: {
       type: Object,
       default: {
-        toast: true
+        toast: false
+      }
+    }
+  },
+  watch: {
+    'isShow.toast'(){
+      if(this.isShow.toast){
+        setTimeout(() => {
+          this.isShow.toast = false
+        }, 1500);
       }
     }
   },

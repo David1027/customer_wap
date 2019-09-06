@@ -9,21 +9,21 @@
       <h3>请完善你的资料信息</h3>
       <input type="text" v-model="form.name" placeholder="请输入公司名称\姓名" />
       <input type="text" v-model="form.phone" placeholder="请输入联系方式" />
-      <button>确定</button>
+      <button @click="submit">确定</button>
     </div>
-    <toast :message="message"></toast>
+    <toast :isShow="showMsg" :message="message"></toast>
   </div>
 </template>
 
 <script>
-import toast from '~/components/toast';
+import toast from "~/components/toast";
 export default {
-  components:{
+  components: {
     toast
   },
   data() {
     return {
-      showMsg: true,
+      showMsg: { toast: true },
       message: "已完成",
       form: {
         name: "",
@@ -32,7 +32,11 @@ export default {
     };
   },
   mounted() {},
-  methods: {}
+  methods: {
+    submit() {
+      this.showMsg.toast = true;
+    }
+  }
 };
 </script>
 
