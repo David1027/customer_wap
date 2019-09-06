@@ -61,6 +61,7 @@ export default {
     align-items: center;
     justify-content: center;
     p {
+      max-width: pxToRem(588);
       padding: pxToRem(50) pxToRem(100);
       background-color: #000000;
       border-radius: pxToRem(30);
