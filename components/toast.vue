@@ -11,14 +11,18 @@
 <script>
 export default {
   props: {
+    // 提示内容
     message: {
       type: String,
       default: ""
     },
+    // 提示框显示控制
     isShow: {
       type: Object,
-      default: {
-        toast: false
+      default() {
+        return {
+          toast: false
+        }
       }
     }
   },
