@@ -46,6 +46,7 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  line-height: 1;
 }
 .img_cover{
   img{
@@ -61,6 +62,12 @@ html {
     height: 100%;
     object-fit: contain;
     object-position: center;
+  }
+}
+button{
+  border: none;
+  &:focus{
+    outline: none;
   }
 }
 .back_box{
@@ -84,5 +91,11 @@ html {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+// 绝对居中
+.flexCC{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
