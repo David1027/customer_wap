@@ -7,32 +7,30 @@
 </template>
 
 <script>
-import rem from '~/assets/js/rem'
+import rem from "~/assets/js/rem";
 
 export default {
   data() {
-    return {
-
-    }
+    return {};
   },
   mounted() {
-    rem()
+    rem();
   },
-  methods: {
-  },
+  methods: {},
   head() {
     return {
-      title: '客户管理系统'
-    }
+      title: "客户管理系统"
+    };
   }
-}
+};
 </script>
 
 <style lang="scss">
 @import "~/assets/css/_mixin.scss";
 
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 37.5px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -42,58 +40,63 @@ html {
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
-*{
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   line-height: 1;
 }
-.img_cover{
-  img{
+.img_cover {
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
   }
 }
-.img_contain{
-  img{
+.img_contain {
+  img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     object-position: center;
   }
 }
-button{
+button {
   border: none;
-  &:focus{
+  &:focus {
     outline: none;
   }
 }
-.back_box{
+input {
+  &:focus {
+    outline: none;
+  }
+}
+.back_box {
   background-size: cover;
   background-color: white;
   background-position: center;
   background-repeat: no-repeat;
 }
 /* 两行省略号 */
-.ellipsis_2{
-  overflow : hidden;
+.ellipsis_2 {
+  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 /* 3行省略号 */
-.ellipsis_3{
-  overflow : hidden;
+.ellipsis_3 {
+  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 // 绝对居中
-.flexCC{
+.flexCC {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,5 +1,5 @@
 <template>
-  <!-- toast弹窗 父组件传值 showMsg: { toast: true }, message: "已完成" -->
+  <!-- toast弹窗 父组件传值 showMsg: { toast: false }, message: "已完成" -->
   <div id="myToast" v-show="isShow.toast">
     <div class="toast_transparent" @click="isShow.toast = false"></div>
     <div class="toast-con">
@@ -29,14 +29,18 @@ export default {
   watch: {
     'isShow.toast'(){
       if(this.isShow.toast){
-        setTimeout(() => {
+        this.setTime = setTimeout(() => {
           this.isShow.toast = false
         }, 1500);
+      }else{
+        clearTimeout(this.setTime)
       }
     }
   },
   data() {
-    return {};
+    return {
+      setTime: null
+    };
   },
   mounted() {},
   methods: {}
@@ -65,13 +69,15 @@ export default {
     align-items: center;
     justify-content: center;
     p {
-      max-width: pxToRem(588);
+      text-align: center;
+      white-space: pre-wrap;
+      max-width: pxToRem(600);
       padding: pxToRem(50) pxToRem(100);
       background-color: #000000;
       border-radius: pxToRem(30);
       opacity: 0.8;
       @include font-dpr(32);
-      line-height: pxToRem(25);
+      line-height: pxToRem(40);
       color: #ffffff;
     }
   }
