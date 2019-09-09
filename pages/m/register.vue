@@ -46,9 +46,11 @@ export default {
       this.$axios.post("/api/compang/save", this.form).then(res => {
         if (res.data.code == 200) {
           this.showToast("注册成功");
-          // this.$router.push({
-          //   path: "/m/agentMange"
-          // });
+          setTimeout(() => {
+            this.$router.push({
+              path: "/m/login/"
+            });
+          }, 2000);
         } else {
           let msg = res.data.msg || "注册失败";
           this.showToast(msg);
