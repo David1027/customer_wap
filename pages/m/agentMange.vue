@@ -13,15 +13,17 @@
     </div>
     <div class="bottom-con">
       <div class="no-customer flexCC" v-if="false">暂无客户数据...</div>
-      <div class="customer-join">
-        <h3>添加客户</h3>
-      </div>
+      <companyForm></companyForm>
     </div>
   </div>
 </template>
 
 <script>
+import companyForm from '~/components/companyForm'
 export default {
+  components:{
+    companyForm
+  },
   data() {
     return {
       agent: {
@@ -83,22 +85,11 @@ export default {
     padding: pxToRem(40) pxToRem(30) pxToRem(0);
     > div {
       width: 100%;
-      background-color: #ffffff;
-      box-shadow: 0px 0px pxToRem(16) 0px rgba(50, 50, 50, 0.29);
-      border-radius: pxToRem(20);
     }
     .no-customer {
       height: pxToRem(708);
       @include font-dpr(28);
       color: #666666;
-    }
-    .customer-join {
-      h3 {
-        padding: pxToRem(60) 0 pxToRem(56);
-        text-align: center;
-        @include font-dpr(42);
-        color: #333333;
-      }
     }
   }
 }

@@ -1,0 +1,242 @@
+<template>
+  <!-- 公司信息表单 -->
+  <div id="companyForm">
+    <div class="company-form" :class="{'isChage' : isChange}">
+      <h3 v-if="!isChange">添加客户</h3>
+      <h3 v-else>修改资料</h3>
+      <div class="form-add-box">
+        <div class="input-con">
+          <p class="label" v-if="isChange">公司名称</p>
+          <input type="text" placeholder="请输入公司名称" v-model="form.company" />
+        </div>
+        <div class="input-con">
+          <p class="label" v-if="isChange">客户名称</p>
+          <input type="text" placeholder="请输入客户名称" v-model="form.name" />
+        </div>
+        <div class="input-con">
+          <p class="label" v-if="isChange">联系方式</p>
+          <input type="text" placeholder="请输入客户联系方式" v-model="form.phone" />
+        </div>
+        <div class="upimg-con">
+          <p class="name">客户信息登记表</p>
+          <el-upload
+            :show-file-list="false"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            accept="image/*"
+            :on-success="msgSuccess"
+          >
+            <button>上传</button>
+          </el-upload>
+        </div>
+        <div class="company-msg" v-show="imgMsg != null">
+          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('imgMsg')" />
+          <img class="show-img" :src="imgMsg" />
+        </div>
+        <div class="upimg-con">
+          <p class="name">签约合同</p>
+          <el-upload
+            :show-file-list="false"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            accept="image/*"
+            :on-success="contactSuccess"
+          >
+            <button>上传</button>
+          </el-upload>
+        </div>
+        <div class="company-msg contact" v-show="imgContact != null">
+          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('imgContact')" />
+          <img class="show-img" :src="imgContact" />
+        </div>
+      </div>
+    </div>
+    <button class="submit" v-if="!isChange" @click="submit">添加</button>
+    <button class="submit" v-else>确认</button>
+
+    <toast :isShow="showMsg" :message="message"></toast>
+  </div>
+</template>
+
+<script>
+import toast from "~/components/toast";
+export default {
+  components: {
+    toast
+  },
+  props: {
+    isChange: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      form: {
+        company: "",
+        name: "",
+        phone: ""
+      },
+      imgMsg: null, // 客户信息图片
+      imgContact: null, // 合同图片
+
+      // toast组件的值
+      showMsg: { toast: false },
+      message: "已完成"
+    };
+  },
+  mounted() {},
+  methods: {
+    submit() {
+      for (let i in this.form) {
+        if(!this.testForm(i, this.form[i])){
+          return false
+        }
+      }
+      if (this.imgMsg == null && this.imgContact == null) {
+        this.showToast("请上传《客户信息登记表》\n或《签约合同》");
+        return false
+      }
+      this.showToast('添加成功')
+    },
+    // 验证
+    testForm(name, value) {
+      let titles = {
+        company: "与营业执照\n一致的公司名称",
+        name: "公司相关\n负责人姓名",
+        phone: "联系方式"
+      };
+      let reg = {
+        phone: /^1\d{10}$/
+      };
+      if (value == "") {
+        this.showToast("请输入" + titles[name]);
+        return false;
+      } else {
+        if (reg[name]) {
+          if (!reg[name].test(value)) {
+            this.showToast("请输入正确的" + titles[name]);
+            return false;
+          }
+        }
+      }
+      return true
+    },
+    // 显示toast
+    showToast(message) {
+      this.showMsg.toast = true;
+      this.message = message;
+    },
+    // 图片上传成功
+    msgSuccess(res) {
+      console.log(res);
+      this.imgMsg =
+        "https://xinlianshiye.oss-cn-hangzhou.aliyuncs.com/public/upload/news/faebe7de114ed202760b84e6daf38f1b/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190827094413.jpg";
+    },
+    contactSuccess(res) {
+      this.imgContact =
+        "https://xinlianshiye.oss-cn-hangzhou.aliyuncs.com/public/upload/news/faebe7de114ed202760b84e6daf38f1b/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190827094413.jpg";
+    },
+    // 删除图片
+    imgCancle(name) {
+      this[name] = null;
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "~/assets/css/_mixin.scss";
+#companyForm {
+  .company-form {
+    background-color: #ffffff;
+    box-shadow: 0px 0px pxToRem(16) 0px rgba(50, 50, 50, 0.29);
+    border-radius: pxToRem(20);
+    > h3 {
+      padding: pxToRem(60) 0 pxToRem(56);
+      text-align: center;
+      @include font-dpr(42);
+      color: #333333;
+    }
+    .form-add-box {
+      padding: 0 pxToRem(70) pxToRem(16);
+      .input-con {
+        display: flex;
+        align-items: center;
+        margin-bottom: pxToRem(36);
+        input {
+          width: 100%;
+          height: pxToRem(80);
+          background-color: #ffffff;
+          border: solid pxToRem(2) #bfbfbf;
+          text-indent: pxToRem(28);
+        }
+        &:last-child {
+          margin-bottom: pxToRem(76);
+        }
+      }
+      .upimg-con {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: pxToRem(60);
+        @include font-dpr(28);
+        .name {
+          color: #999999;
+        }
+        button {
+          width: pxToRem(130);
+          height: pxToRem(60);
+          border-radius: pxToRem(16);
+          border: solid pxToRem(2) #008fd7;
+          background-color: transparent;
+          color: #008fd7;
+        }
+      }
+      .company-msg {
+        width: pxToRem(360);
+        display: block;
+        margin: 0 auto;
+        margin-bottom: pxToRem(120);
+        background-color: #ffffff;
+        box-shadow: 0px 0px pxToRem(10) 0px rgba(50, 50, 50, 0.4);
+        position: relative;
+        .show-img {
+          width: 100%;
+        }
+        .cancle {
+          width: pxToRem(64);
+          position: absolute;
+          top: pxToRem(-32);
+          right: pxToRem(-32);
+        }
+        &.contact {
+          margin-bottom: pxToRem(60);
+        }
+      }
+    }
+  }
+  .isChage {
+    .form-add-box {
+      padding: 0 pxToRem(40) pxToRem(16);
+      .input-con {
+        .label {
+          width: 24%;
+          @include font-dpr(28);
+          color: #999999;
+        }
+        input {
+          width: 76%;
+        }
+      }
+    }
+  }
+  .submit {
+    margin-top: pxToRem(50);
+    width: 100%;
+    height: pxToRem(88);
+    background-image: linear-gradient(90deg, #e940a7 0%, #f08247 100%);
+    border-radius: pxToRem(44);
+    @include font-dpr(34);
+    color: #ffffff;
+  }
+}
+</style>

@@ -56,6 +56,7 @@ module.exports = {
    ** Global CSS
    */
   css: [
+    'element-ui/lib/theme-chalk/index.css',
     'weui/dist/style/weui.min.css'
   ],
 
@@ -63,6 +64,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '@/plugins/element-ui',
     '@/plugins/weui',
     '@/plugins/i18n.js',
     '@/plugins/axios'
@@ -80,7 +82,7 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    transpile: [/^weui/],
+    transpile: [/^weui/, /^element-ui/],
     /*
      ** You can extend webpack config here
      */

@@ -34,35 +34,36 @@ export default {
   mounted() {},
   methods: {
     submit() {
-      for(let i in this.form){
-        this.testForm(i, this.form[i])
+      if (!this.testForm(i, this.form[i])) {
+        return false;
       }
     },
     // 验证
-    testForm(name, value){
+    testForm(name, value) {
       let titles = {
-        name: '公司名称\\姓名',
-        phone: '联系方式'
-      }
+        name: "公司名称\\姓名",
+        phone: "联系方式"
+      };
       let reg = {
-        phone : /^1\d{10}$/
-      }
-      if(value == ''){
-        this.showToast(titles[name] + '不能为空')
-        return false
-      }else{
-        if(reg[name]){
-          if(!reg[name].test(value)){
-            this.showToast(titles[name] + '错误')
-            return false
+        phone: /^1\d{10}$/
+      };
+      if (value == "") {
+        this.showToast(titles[name] + "不能为空");
+        return false;
+      } else {
+        if (reg[name]) {
+          if (!reg[name].test(value)) {
+            this.showToast(titles[name] + "错误");
+            return false;
           }
         }
       }
+      return true;
     },
     // 显示toast
-    showToast(message){
+    showToast(message) {
       this.showMsg.toast = true;
-      this.message = message
+      this.message = message;
     }
   }
 };
