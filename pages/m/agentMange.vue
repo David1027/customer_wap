@@ -5,15 +5,15 @@
     <h2 class="agent-name">21世纪中介公司</h2>
     <div class="agent-msg">
       <p class="agent-customer">客户数：{{agent.num}}</p>
-      <button v-if="agent.num == 0">添加客户</button>
-      <p class="agent-contact" v-else>
+      <button v-if="addCustome && !$route.query.id" @click="addCustome = false">添加客户</button>
+      <!-- <p class="agent-contact" v-else>
         联系方式：
         <span>13060006000</span>
-      </p>
+      </p> -->
     </div>
     <div class="bottom-con">
       <div class="no-customer flexCC" v-if="false">暂无客户数据...</div>
-      <companyForm></companyForm>
+      <companyForm  v-if="!addCustome || $route.query.id" :isChange="$route.query.id ? true : false"></companyForm>
     </div>
   </div>
 </template>
@@ -26,6 +26,7 @@ export default {
   },
   data() {
     return {
+      addCustome: true,
       agent: {
         num: 30
       }

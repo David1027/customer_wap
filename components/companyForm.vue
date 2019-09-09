@@ -29,7 +29,11 @@
           </el-upload>
         </div>
         <div class="company-msg" v-show="customerRegisterImage != null">
-          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('customerRegisterImage')" />
+          <img
+            class="cancle"
+            src="~/assets/images/cancle.png"
+            @click="imgCancle('customerRegisterImage')"
+          />
           <img class="show-img" :src="customerRegisterImage | imgUrl" />
         </div>
         <div class="upimg-con">
@@ -44,13 +48,16 @@
           </el-upload>
         </div>
         <div class="company-msg contact" v-show="customerSignImage != null">
-          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('customerSignImage')" />
+          <img
+            class="cancle"
+            src="~/assets/images/cancle.png"
+            @click="imgCancle('customerSignImage')"
+          />
           <img class="show-img" :src="customerSignImage | imgUrl" />
         </div>
       </div>
     </div>
-    <button class="submit" v-if="!isChange" @click="submit">添加</button>
-    <button class="submit" v-else>确认</button>
+    <button class="submit" @click="submit">{{ isChange ? '确认' : '添加'}}</button>
 
     <toast :isShow="showMsg" :message="message"></toast>
   </div>
@@ -83,19 +90,63 @@ export default {
       message: "已完成"
     };
   },
-  mounted() {},
+  mounted() {
+    if (this.$route.query.id) {
+      this.getMsgId();
+    }
+  },
   methods: {
     submit() {
       for (let i in this.form) {
-        if(!this.testForm(i, this.form[i])){
-          return false
+        if (!this.testForm(i, this.form[i])) {
+          return false;
         }
       }
-      if (this.customerRegisterImage == null && this.customerSignImage == null) {
+      if (
+        this.customerRegisterImage == null &&
+        this.customerSignImage == null
+      ) {
         this.showToast("请上传《客户信息登记表》\n或《签约合同》");
-        return false
+        return false;
       }
-      this.showToast('添加成功')
+      this.form["customerRegisterImage"] = this.customerRegisterImage;
+      this.form["customerSignImage"] = this.customerSignImage;
+      if (!this.$route.query.id) {
+        this.form["companyId"] = 1;
+        this.send("/api/customer/save");
+      } else {
+        this.send("/api/customer/update");
+      }
+    },
+    // 获取详情
+    getMsgId() {
+      this.$axios
+        .get("/api/customer/getbyid", {
+          params: {
+            id: this.$route.query.id
+          }
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.$set(this, "form", res.data.result);
+            this.customerRegisterImage = this.form.customerRegisterImage == '' ? null : this.form.customerRegisterImage;
+            this.customerSignImage = this.form.customerSignImage == '' ? null : this.form.customerSignImage;
+          } else {
+            let msg = res.data.msg || "获取详情失败";
+            this.showToast(msg);
+          }
+        });
+    },
+    // 发送表单
+    send(url) {
+      this.$axios.post(url, this.form).then(res => {
+        if (res.data.code == 200) {
+          this.showToast("添加成功");
+        } else {
+          let msg = res.data.msg || "添加失败";
+          this.showToast(msg);
+        }
+      });
     },
     // 验证
     testForm(name, value) {
@@ -118,7 +169,7 @@ export default {
           }
         }
       }
-      return true
+      return true;
     },
     // 显示toast
     showToast(message) {
@@ -128,10 +179,10 @@ export default {
     // 图片上传成功
     msgSuccess(res) {
       console.log(res);
-      this.customerRegisterImage = res.result.url
+      this.customerRegisterImage = res.result.url;
     },
     contactSuccess(res) {
-      this.customerSignImage = res.result.url
+      this.customerSignImage = res.result.url;
     },
     // 删除图片
     imgCancle(name) {
