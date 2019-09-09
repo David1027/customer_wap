@@ -101,4 +101,16 @@ input {
   align-items: center;
   justify-content: center;
 }
+
+.noData{
+  width: pxToRem(690);
+  height: pxToRem(690);
+  text-align: center;
+  line-height: pxToRem(690);
+  margin: 0 auto;
+  box-shadow: 0px 0px 16px 0px rgba(50, 50, 50, 0.29);
+  @include font-dpr(28);
+  color: #666666;
+  border-radius: pxToRem(20);
+}
 </style>
