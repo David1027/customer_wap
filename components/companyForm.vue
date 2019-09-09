@@ -112,7 +112,7 @@ export default {
         }
       }
       if (!this.$route.query.id) {
-        this.form["companyId"] = 1;
+        this.form["companyId"] = this.$route.query.companyId;
         this.send("/api/customer/save");
       } else {
         delete this.form["createTime"];

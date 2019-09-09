@@ -38,7 +38,7 @@ export default {
       agent: {},
       total: 0,
       page: 0,
-      size: 6
+      size: 10
     };
   },
   mounted() {
@@ -98,6 +98,8 @@ export default {
     // 添加或者修改成功
     submitSuccess() {
       this.addCustome = true;
+      this.page = 0
+      this.getCustomeList()
     },
     // 监听文档是否到底
     getHeight() {
