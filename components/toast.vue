@@ -31,7 +31,7 @@ export default {
       if(this.isShow.toast){
         this.setTime = setTimeout(() => {
           this.isShow.toast = false
-        }, 4000);
+        }, 1500);
       }else{
         clearTimeout(this.setTime)
       }
