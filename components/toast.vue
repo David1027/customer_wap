@@ -71,7 +71,7 @@ export default {
     p {
       text-align: center;
       white-space: pre-wrap;
-      max-width: pxToRem(588);
+      max-width: pxToRem(600);
       padding: pxToRem(50) pxToRem(100);
       background-color: #000000;
       border-radius: pxToRem(30);
