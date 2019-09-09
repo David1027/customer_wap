@@ -62,10 +62,7 @@ module.exports = {
     '@/plugins/weui',
     '@/plugins/i18n.js',
     '@/plugins/axios',
-    {
-      ssr: false,
-      src: '@/plugins/filter'
-    }
+    '@/plugins/filter'
   ],
 
   /*

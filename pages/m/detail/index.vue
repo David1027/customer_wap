@@ -6,8 +6,8 @@
           <img src="~/assets/images/logo.jpg" alt="">
         </div>
         <div class="company">
-          <p class="company_name">中介公司名称</p>
-          <p class="clients">客户数: <span>44</span></p>
+          <p class="company_name">{{$store.state.app.agentName}}</p>
+          <p class="clients">客户数: <span>{{$store.state.app.agentCusNum}}</span></p>
         </div>
       </div>
       <div class="content">

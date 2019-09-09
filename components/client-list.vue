@@ -5,18 +5,18 @@
       <div class="client_item" v-for="(item,index) in clientList" :key="index" @click="skip()">
         <div class="content">
           <p class="company_name">
-            温州千百梦鞋业有限公司
+            {{item.customerName}}
           </p>
           <p class="client_text">
-            客户姓名: 林林林
+            客户姓名: {{item.customerContact}}
           </p>
           <p class="client_text">
-            联系方式: 11111111111
+            联系方式: {{item.customerPhone}}
           </p>
         </div>
         <div class="status">
-          <div class="status_item item1">已登记</div>
-          <div class="status_item item2">已签约</div>
+          <div class="status_item item1" v-if="item.isRegister">已登记</div>
+          <div class="status_item item2" v-if="item.isSign">已签约</div>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     skip(clientId) {
-      this.$router.push({ path: '/m/', query: { clientId: clientId }})
+      this.$router.push({ path: '/m/detail/', query: { clientId: clientId }})
     }
   }
 }

@@ -2,38 +2,110 @@
   <!-- 中介管理 -->
   <div id="agentMange">
     <img src="~/assets/images/logo.jpg" class="logo" />
-    <h2 class="agent-name">21世纪中介公司</h2>
+    <h2 class="agent-name">{{agent.companyName}}</h2>
     <div class="agent-msg">
-      <p class="agent-customer">客户数：{{agent.num}}</p>
+      <p class="agent-customer">客户数：{{total}}</p>
       <button v-if="addCustome && !$route.query.id" @click="addCustome = false">添加客户</button>
       <!-- <p class="agent-contact" v-else>
         联系方式：
         <span>13060006000</span>
-      </p> -->
+      </p>-->
     </div>
     <div class="bottom-con">
-      <div class="no-customer flexCC" v-if="false">暂无客户数据...</div>
-      <companyForm  v-if="!addCustome || $route.query.id" :isChange="$route.query.id ? true : false"></companyForm>
+      <companyForm
+        v-if="!addCustome || $route.query.id"
+        :isChange="$route.query.id ? true : false"
+        @sendSuccess="submitSuccess"
+      ></companyForm>
+      <ClientList :client-list="clientList" v-else></ClientList>
     </div>
   </div>
 </template>
 
 <script>
-import companyForm from '~/components/companyForm'
+import companyForm from "~/components/companyForm";
+import ClientList from "~/components/client-list";
+import isReachBottom from "~/assets/js/isReachBottom";
 export default {
-  components:{
-    companyForm
+  components: {
+    companyForm,
+    ClientList
   },
   data() {
     return {
       addCustome: true,
-      agent: {
-        num: 30
-      }
+      clientList: [],
+      agent: {},
+      total: 0,
+      page: 0,
+      size: 6
     };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.getAgentMsg();
+    document.addEventListener("scroll", this.getHeight);
+  },
+  methods: {
+    // 获取中介信息
+    getAgentMsg() {
+      this.$axios
+        .get("/api/compang/getbyid", {
+          params: {
+            id: this.$route.query.companyId
+          }
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.$set(this, "agent", res.data.result);
+            this.$store.commit("app/SET_agentName", this.agent.companyName);
+            this.getCustomeList();
+          } else {
+            let msg = res.data.msg || "获取信息失败";
+            this.showToast(msg);
+          }
+        });
+    },
+    // 获取客户列表
+    getCustomeList() {
+      this.$axios
+        .get("/api/customer/list", {
+          params: {
+            companyId: this.$route.query.companyId,
+            page: this.page,
+            size: this.size
+          }
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            if (res.data.result.items.length != 0) {
+              if (!this.page) {
+                this.$set(this, "clientList", res.data.result.items);
+                this.total = res.data.result.total;
+                this.$store.commit("app/SET_agentCusNum", this.total);
+              } else {
+                let data = this.clientList.concat(res.data.result.items);
+                this.$set(this, "clientList", data);
+              }
+            }
+          } else {
+            let msg = res.data.msg || "获取客户列表失败";
+            this.showToast(msg);
+          }
+        });
+    },
+    // 添加或者修改成功
+    submitSuccess() {
+      this.addCustome = true;
+    },
+    // 监听文档是否到底
+    getHeight() {
+      if (isReachBottom()) {
+        console.log("到底了");
+        this.page++;
+        this.getCustomeList();
+      }
+    }
+  }
 };
 </script>
 

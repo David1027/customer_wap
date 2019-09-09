@@ -97,11 +97,6 @@ export default {
   },
   methods: {
     submit() {
-      for (let i in this.form) {
-        if (!this.testForm(i, this.form[i])) {
-          return false;
-        }
-      }
       if (
         this.customerRegisterImage == null &&
         this.customerSignImage == null
@@ -111,10 +106,16 @@ export default {
       }
       this.form["customerRegisterImage"] = this.customerRegisterImage;
       this.form["customerSignImage"] = this.customerSignImage;
+      for (let i in this.form) {
+        if (!this.testForm(i, this.form[i])) {
+          return false;
+        }
+      }
       if (!this.$route.query.id) {
         this.form["companyId"] = 1;
         this.send("/api/customer/save");
       } else {
+        delete this.form["createTime"];
         this.send("/api/customer/update");
       }
     },
@@ -129,8 +130,14 @@ export default {
         .then(res => {
           if (res.data.code == 200) {
             this.$set(this, "form", res.data.result);
-            this.customerRegisterImage = this.form.customerRegisterImage == '' ? null : this.form.customerRegisterImage;
-            this.customerSignImage = this.form.customerSignImage == '' ? null : this.form.customerSignImage;
+            this.customerRegisterImage =
+              this.form.customerRegisterImage == ""
+                ? null
+                : this.form.customerRegisterImage;
+            this.customerSignImage =
+              this.form.customerSignImage == ""
+                ? null
+                : this.form.customerSignImage;
           } else {
             let msg = res.data.msg || "获取详情失败";
             this.showToast(msg);
@@ -141,7 +148,11 @@ export default {
     send(url) {
       this.$axios.post(url, this.form).then(res => {
         if (res.data.code == 200) {
-          this.showToast("添加成功");
+          let msg = this.$route.query.id ? "修改成功" : "添加成功";
+          this.showToast(msg);
+          setTimeout(() => {
+            this.$emit('sendSuccess')
+          }, 2000);
         } else {
           let msg = res.data.msg || "添加失败";
           this.showToast(msg);
