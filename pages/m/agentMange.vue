@@ -43,6 +43,7 @@ export default {
   background-size: pxToRem(524);
   background-image: url("../../assets/images/banner-back.png");
   background-position: pxToRem(386) pxToRem(-238);
+  padding: 0 0 pxToRem(60);
   .logo {
     width: pxToRem(200);
     padding: pxToRem(48) pxToRem(0) pxToRem(69) pxToRem(35);

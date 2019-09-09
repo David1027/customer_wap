@@ -8,12 +8,7 @@ module.exports = {
   // 自定义路由
   router: {
     middleware: ['cookieInfo', 'config'],
-    extendRoutes(routes, resolve) {
-      // routes.push({
-      //   path: '/*_p(\\d+).html',
-      //   component: resolve(__dirname, 'pages/test')
-      // })
-    }
+    extendRoutes(routes, resolve) {}
   },
   /*
    ** Headers of the page
@@ -23,10 +18,9 @@ module.exports = {
     title: pkg.name,
     meta: [{
         charset: 'utf-8'
-      },
-      {
+      }, {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1'
+        content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
       },
       {
         hid: 'description',
@@ -104,6 +98,11 @@ module.exports = {
   proxy: myConfig.proxy,
   env: myConfig.env,
   axios: {
-
+    baseURL: myConfig.env.baseUrl,
+    browserBaseURL: myConfig.env.baseUrl
+  },
+  server: {
+    port: myConfig.PORT, // default: 3000
+    host: myConfig.HOST // default: localhost
   }
 }
