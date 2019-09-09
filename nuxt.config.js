@@ -61,7 +61,11 @@ module.exports = {
     '@/plugins/element-ui',
     '@/plugins/weui',
     '@/plugins/i18n.js',
-    '@/plugins/axios'
+    '@/plugins/axios',
+    {
+      ssr: false,
+      src: '@/plugins/filter'
+    }
   ],
 
   /*

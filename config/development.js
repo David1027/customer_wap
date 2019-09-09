@@ -5,8 +5,9 @@ module.exports = {
     timeout: 20000
   },
   HOST: '0.0.0.0',
-  PORT: 3000,
+  PORT: 80,
   proxy: {
-    '/home': 'http://localhost:8080'
+    '/api': 'http://192.168.40.25:80',
+    '/upload': 'http://192.168.40.25:80'
   }
 }

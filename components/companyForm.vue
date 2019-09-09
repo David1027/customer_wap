@@ -7,45 +7,45 @@
       <div class="form-add-box">
         <div class="input-con">
           <p class="label" v-if="isChange">公司名称</p>
-          <input type="text" placeholder="请输入公司名称" v-model="form.company" />
+          <input type="text" placeholder="请输入公司名称" v-model="form.customerName" />
         </div>
         <div class="input-con">
           <p class="label" v-if="isChange">客户名称</p>
-          <input type="text" placeholder="请输入客户名称" v-model="form.name" />
+          <input type="text" placeholder="请输入客户名称" v-model="form.customerContact" />
         </div>
         <div class="input-con">
           <p class="label" v-if="isChange">联系方式</p>
-          <input type="text" placeholder="请输入客户联系方式" v-model="form.phone" />
+          <input type="text" placeholder="请输入客户联系方式" v-model="form.customerPhone" />
         </div>
         <div class="upimg-con">
           <p class="name">客户信息登记表</p>
           <el-upload
             :show-file-list="false"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/upload"
             accept="image/*"
             :on-success="msgSuccess"
           >
             <button>上传</button>
           </el-upload>
         </div>
-        <div class="company-msg" v-show="imgMsg != null">
-          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('imgMsg')" />
-          <img class="show-img" :src="imgMsg" />
+        <div class="company-msg" v-show="customerRegisterImage != null">
+          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('customerRegisterImage')" />
+          <img class="show-img" :src="customerRegisterImage | imgUrl" />
         </div>
         <div class="upimg-con">
           <p class="name">签约合同</p>
           <el-upload
             :show-file-list="false"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/upload"
             accept="image/*"
             :on-success="contactSuccess"
           >
             <button>上传</button>
           </el-upload>
         </div>
-        <div class="company-msg contact" v-show="imgContact != null">
-          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('imgContact')" />
-          <img class="show-img" :src="imgContact" />
+        <div class="company-msg contact" v-show="customerSignImage != null">
+          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('customerSignImage')" />
+          <img class="show-img" :src="customerSignImage | imgUrl" />
         </div>
       </div>
     </div>
@@ -71,12 +71,12 @@ export default {
   data() {
     return {
       form: {
-        company: "",
-        name: "",
-        phone: ""
+        customerContact: "",
+        customerContact: "",
+        customerPhone: ""
       },
-      imgMsg: null, // 客户信息图片
-      imgContact: null, // 合同图片
+      customerRegisterImage: null, // 客户信息图片
+      customerSignImage: null, // 合同图片
 
       // toast组件的值
       showMsg: { toast: false },
@@ -91,7 +91,7 @@ export default {
           return false
         }
       }
-      if (this.imgMsg == null && this.imgContact == null) {
+      if (this.customerRegisterImage == null && this.customerSignImage == null) {
         this.showToast("请上传《客户信息登记表》\n或《签约合同》");
         return false
       }
@@ -100,9 +100,9 @@ export default {
     // 验证
     testForm(name, value) {
       let titles = {
-        company: "与营业执照\n一致的公司名称",
-        name: "公司相关\n负责人姓名",
-        phone: "联系方式"
+        customerName: "与营业执照\n一致的公司名称",
+        customerContact: "公司相关\n负责人姓名",
+        customerPhone: "联系方式"
       };
       let reg = {
         phone: /^1\d{10}$/
@@ -128,12 +128,10 @@ export default {
     // 图片上传成功
     msgSuccess(res) {
       console.log(res);
-      this.imgMsg =
-        "https://xinlianshiye.oss-cn-hangzhou.aliyuncs.com/public/upload/news/faebe7de114ed202760b84e6daf38f1b/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190827094413.jpg";
+      this.customerRegisterImage = res.result.url
     },
     contactSuccess(res) {
-      this.imgContact =
-        "https://xinlianshiye.oss-cn-hangzhou.aliyuncs.com/public/upload/news/faebe7de114ed202760b84e6daf38f1b/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190827094413.jpg";
+      this.customerSignImage = res.result.url
     },
     // 删除图片
     imgCancle(name) {
