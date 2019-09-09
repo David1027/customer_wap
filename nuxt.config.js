@@ -22,17 +22,17 @@ module.exports = {
   head: {
     title: pkg.name,
     meta: [{
-      charset: 'utf-8'
-    },
-    {
-      name: 'viewport',
-      content: 'width=device-width, initial-scale=1'
-    },
-    {
-      hid: 'description',
-      name: 'description',
-      content: pkg.description
-    }
+        charset: 'utf-8'
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1'
+      },
+      {
+        hid: 'description',
+        name: 'description',
+        content: pkg.description
+      }
     ],
     link: [{
       rel: 'icon',
@@ -83,11 +83,22 @@ module.exports = {
    */
   build: {
     transpile: [/^weui/, /^element-ui/],
+    babel: {
+      plugins: [
+        [
+          'component',
+          {
+            libraryName: 'element-ui',
+            "styleLibraryName": "theme-chalk"
+          },
+          'element-ui'
+        ]
+      ]
+    },
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
-    }
+    extend(config, ctx) {}
   },
   // 跨域代理
   proxy: myConfig.proxy,

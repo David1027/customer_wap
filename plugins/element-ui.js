@@ -1,6 +1,8 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui'
+import {
+  Upload
+} from 'element-ui'
 
 export default () => {
-  Vue.use(ElementUI)
+  Vue.use(Upload)
 }
