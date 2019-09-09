@@ -7,8 +7,8 @@
     </div>
     <div class="register-con">
       <h3>请完善你的资料信息</h3>
-      <input type="text" v-model="form.name" placeholder="请输入公司名称\姓名" />
-      <input type="text" v-model="form.phone" placeholder="请输入联系方式" />
+      <input type="text" v-model="form.companyName" placeholder="请输入公司名称\姓名" />
+      <input type="text" v-model="form.companyPhone" placeholder="请输入联系方式" />
       <button @click="submit">确定</button>
     </div>
     <toast :isShow="showMsg" :message="message"></toast>
@@ -26,26 +26,43 @@ export default {
       showMsg: { toast: false },
       message: "已完成",
       form: {
-        name: "",
-        phone: ""
+        companyName: "",
+        companyPhone: "",
+        companyOpenid: "",
+        createName: ""
       }
     };
   },
   mounted() {},
   methods: {
     submit() {
-      if (!this.testForm(i, this.form[i])) {
-        return false;
+      this.form.companyOpenid = this.$route.query.Openid;
+      this.form.createName = this.$route.query.SalesName;
+      for (let i in this.form) {
+        if (!this.testForm(i, this.form[i])) {
+          return false;
+        }
       }
+      this.$axios.post("/api/compang/save", this.form).then(res => {
+        if (res.data.code == 200) {
+          this.showToast("注册成功");
+          // this.$router.push({
+          //   path: "/m/agentMange"
+          // });
+        } else {
+          let msg = res.data.msg || "注册失败";
+          this.showToast(msg);
+        }
+      });
     },
     // 验证
     testForm(name, value) {
       let titles = {
-        name: "公司名称\\姓名",
-        phone: "联系方式"
+        companyName: "公司名称\\姓名",
+        companyPhone: "联系方式"
       };
       let reg = {
-        phone: /^1\d{10}$/
+        companyPhone: /^1\d{10}$/
       };
       if (value == "") {
         this.showToast(titles[name] + "不能为空");
