@@ -234,7 +234,7 @@ export default {
 
           .key{
             display: inline-block;
-            width: pxToRem(120);
+            width: pxToRem(140);
             color: #999999;
             margin-right: pxToRem(20);
           }
@@ -296,11 +296,6 @@ export default {
     border-radius: unset;
     border-top: pxToRem(1) solid #d2d2d2;
     height: pxToRem(378);
-
-    &.active{
-
-    }
-
     .weui-half-screen-dialog__bd{
       padding-top: pxToRem(100);
       .text{
