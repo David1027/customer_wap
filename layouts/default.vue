@@ -12,18 +12,17 @@ import rem from "~/assets/js/rem";
 export default {
   data() {
     return {
-      first: true
     };
   },
   watch: {
     $route() {
-      if (this.$route.query.companyId && this.first) {
+      if (this.$route.query.companyId) {
         this.getAgentMsg();
       }
     }
   },
   mounted() {
-    if (this.$route.query.companyId && this.first) {
+    if (this.$route.query.companyId) {
       this.getAgentMsg();
     }
     rem();
@@ -31,7 +30,6 @@ export default {
   methods: {
     getAgentMsg() {
       this.$store.dispatch("app/getAgentMsg", this.$route.query.companyId);
-      this.first = false;
     }
   },
   head() {

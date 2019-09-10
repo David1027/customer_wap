@@ -104,8 +104,8 @@ export default {
         this.showToast("请上传《客户信息登记表》\n或《签约合同》");
         return false;
       }
-      this.form["customerRegisterImage"] = this.customerRegisterImage;
-      this.form["customerSignImage"] = this.customerSignImage;
+      this.form["customerRegisterImage"] = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
+      this.form["customerSignImage"] = this.customerSignImage == null ? undefined : this.customerSignImage;
       for (let i in this.form) {
         if (!this.testForm(i, this.form[i])) {
           return false;

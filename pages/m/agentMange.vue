@@ -51,8 +51,8 @@ export default {
                 let data = this.clientList.concat(res.data.result.items);
                 this.$set(this, "clientList", data);
               }
-            }else{
-              this.page --
+            } else {
+              this.page--;
             }
           } else {
             let msg = res.data.msg || "获取客户列表失败";
@@ -63,8 +63,8 @@ export default {
     // 添加或者修改成功
     submitSuccess() {
       this.addCustome = true;
-      this.page = 0
-      this.getCustomeList()
+      this.page = 0;
+      this.getCustomeList();
     },
     // 监听文档是否到底
     getHeight() {
@@ -77,7 +77,7 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener("scroll", this.getHeight);
-  },
+  }
 };
 </script>
 

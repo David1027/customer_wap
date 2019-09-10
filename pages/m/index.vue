@@ -94,7 +94,6 @@ export default {
         }
       }).then(res => {
         if (res.data.code === 200) {
-          console.log('gainAgencyList ==>', res.data)
           self.agencyTotal = res.data.result.total
           if (!res.data.result.items.length > 0) {
             self.agencyCurr--
