@@ -44,11 +44,11 @@
             《客户信息登记表》
           </p>
           <div class="image_box">
-            <div class="img_cover image">
+            <div class="img_cover image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
-            <div class="img_cover image">
-              <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
+            <div class="img_cover image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
+              <img :src="detail.customerSignImage | imageShow(imageBaseUrl)" alt="">
             </div>
           </div>
         </div>
@@ -56,21 +56,38 @@
     </div>
     <div class="fixed_button">
       <div class="button">
-        <span @click="deleteClient">删除</span>
+        <span @click="screenDialog = true">删除</span>
       </div>
       <div class="button item1">
-        <span>编辑</span>
+        <span @click="$router.push({ path: '/m/addCustome', query: {id: detail.id}})">编辑</span>
       </div>
       <div class="button item2">
         <span>转移</span>
+      </div>
+    </div>
+    <toast :is-show="isShow" :message="message" />
+    <div class="dialog" v-if="screenDialog" >
+      <div class="weui-mask" @click="screenDialog = false"></div>
+      <div class="weui-half-screen-dialog" :class="screenDialog ? 'active' : ''">
+        <div class="weui-half-screen-dialog__bd">
+          <p class="text">确定删除吗?</p>
+          <div class="button_box">
+            <span class="button" @click="deleteClient">确认</span>
+            <span class="button item1" @click="screenDialog = false">取消</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import toast from '~/components/toast'
 export default {
   name: 'Index',
+  components: {
+    toast
+  },
   filters: {
     imageShow(url, imageBaseUrl) {
       return imageBaseUrl + url
@@ -79,7 +96,12 @@ export default {
   data() {
     return {
       imageBaseUrl: this.$store.state.app.imageBaseUrl,
-      detail: {}
+      detail: {},
+      isShow: {
+        toast: false
+      },
+      message: '',
+      screenDialog: false
     }
   },
   mounted() {
@@ -99,12 +121,30 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           self.$set(self, 'detail', res.data.result)
+        } else {
+          self.message = res.data.msg
+          self.isShow.toast = true
         }
       })
     },
     // 删除客户
     deleteClient() {
-
+      const self = this
+      this.$axios({
+        url: '/api/customer/',
+        method: 'delete',
+        params: {
+          id: self.detail.id
+        }
+      }).then(res => {
+        self.message = res.data.msg
+        self.isShow.toast = true
+        if (res.data.code === 200) {
+          setTimeout(function() {
+            self.$router.push({ path: '/m/agentMange', query: { companyId: self.detail.companyId }})
+          }, 1000)
+        }
+      })
     }
   }
 }
@@ -245,6 +285,51 @@ export default {
     }
     &.item2{
       color: #008fd7;
+    }
+  }
+}
+.dialog{
+  .weui-mask{
+    background: rgba(0, 0, 0, 0);
+  }
+  .weui-half-screen-dialog{
+    border-radius: unset;
+    border-top: pxToRem(1) solid #d2d2d2;
+    height: pxToRem(378);
+
+    &.active{
+
+    }
+
+    .weui-half-screen-dialog__bd{
+      padding-top: pxToRem(100);
+      .text{
+        @include font-dpr(36);
+        color: #333333;
+        text-align: center;
+      }
+      .button_box{
+        width: 100%;
+        margin-top: pxToRem(75);
+        display: flex;
+        justify-content: space-evenly;
+        .button{
+          display: inline-block;
+          width: pxToRem(140);
+          height: pxToRem(72);
+          line-height: pxToRem(72);
+          border: pxToRem(1) solid #bfbfbf;
+          text-align: center;
+          color: #bfbfbf;
+          border-radius: pxToRem(16);
+          @include font-dpr(30);
+
+          &.item1{
+            border-color: #f74444;
+            color: #f74444;
+          }
+        }
+      }
     }
   }
 }
