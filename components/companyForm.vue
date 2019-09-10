@@ -167,11 +167,10 @@ export default {
         customerPhone: "联系方式"
       };
       let reg = {
-        phone: /^1\d{10}$/
+        customerPhone: /^1\d{10}$/
       };
       if (value == "" && value != false) {
         this.showToast("请输入" + titles[name]);
-        console.log(name, value)
         return false;
       } else {
         if (reg[name]) {
