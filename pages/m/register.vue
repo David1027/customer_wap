@@ -48,7 +48,7 @@ export default {
           this.showToast("注册成功");
           setTimeout(() => {
             this.$router.push({
-              path: "/m/login/"
+              path: "/m/agentMange?companyId=" + res.data.result
             });
           }, 2000);
         } else {

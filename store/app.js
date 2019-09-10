@@ -11,14 +11,10 @@ export const mutations = {
   SET_USERINFO(state, userInfo) {
     state.userInfo = userInfo
   },
-  SET_agentName(state, local) {
-    state.agentName = local
-  },
-  SET_agentPhone(state, local) {
-    state.agentPhone = local
-  },
-  SET_agentCusNum(state, local) {
-    state.agentCusNum = local
+  SET_agent(state, local) {
+    state.agentName = local.companyName
+    state.agentPhone = local.companyPhone
+    state.agentCusNum = local.customerCount
   }
 }
 export const actions = {
@@ -29,5 +25,25 @@ export const actions = {
   // 登出
   signOut({ commit }) {
     commit('SET_USERINFO', {})
+  },
+  // 获取中介信息
+  getAgentMsg({ commit }, companyId) {
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .get("/api/compang/getbyid", {
+          params: {
+            id: companyId
+          }
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            commit("SET_agent", res.data.result)
+            resolve()
+          } else {
+            let msg = res.data.msg || '获取中介信息失败'
+            reject(msg)
+          }
+        })
+    })
   }
 }

@@ -47,7 +47,6 @@ export default {
             if (res.data.result.items.length != 0) {
               if (!this.page) {
                 this.$set(this, "clientList", res.data.result.items);
-                this.$store.commit("app/SET_agentCusNum", this.total);
               } else {
                 let data = this.clientList.concat(res.data.result.items);
                 this.$set(this, "clientList", data);

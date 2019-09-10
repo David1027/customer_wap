@@ -11,53 +11,27 @@ import rem from "~/assets/js/rem";
 
 export default {
   data() {
-    return {};
+    return {
+      first: true
+    };
   },
   watch: {
     $route() {
-      if (this.$route.query.companyId) {
+      if (this.$route.query.companyId && this.first) {
         this.getAgentMsg();
       }
     }
   },
   mounted() {
-    if (this.$route.query.companyId) {
+    if (this.$route.query.companyId && this.first) {
       this.getAgentMsg();
     }
     rem();
   },
   methods: {
-    // 获取中介信息
     getAgentMsg() {
-      this.$axios
-        .get("/api/compang/getbyid", {
-          params: {
-            id: this.$route.query.companyId
-          }
-        })
-        .then(res => {
-          if (res.data.code == 200) {
-            this.$store.commit("app/SET_agentName", res.data.result.companyName);
-            this.$store.commit("app/SET_agentPhone", res.data.result.companyPhone);
-            this.getCustomeList()
-          }
-        });
-    },
-    // 获取客户列表
-    getCustomeList() {
-      this.$axios
-        .get("/api/customer/list", {
-          params: {
-            companyId: this.$route.query.companyId,
-            page: 0,
-            size: 1
-          }
-        })
-        .then(res => {
-          if (res.data.code == 200) {
-            this.$store.commit("app/SET_agentCusNum", res.data.result.total);
-          }
-        });
+      this.$store.dispatch("app/getAgentMsg", this.$route.query.companyId);
+      this.first = false;
     }
   },
   head() {
