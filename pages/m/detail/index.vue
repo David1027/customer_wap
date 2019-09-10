@@ -44,10 +44,10 @@
             《客户信息登记表》
           </p>
           <div class="image_box">
-            <div class="img_cover image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
+            <div class="img_contain image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
-            <div class="img_cover image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
+            <div class="img_contain image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               <img :src="detail.customerSignImage | imageShow(imageBaseUrl)" alt="">
             </div>
           </div>

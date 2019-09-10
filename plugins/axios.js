@@ -25,7 +25,7 @@ export default function ({
         }
       }
     }
-    console.log('config.url', config.url)
+    
     if (config.method === 'post') {
       if (!config.json) {
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
