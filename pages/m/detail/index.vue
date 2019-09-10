@@ -45,13 +45,13 @@
               《客户信息登记表》
             </p>
 
-            <div class="img_cover image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
+            <div class="img_contain image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
             <p class="table_title" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               《签约合同》
             </p>
-            <div class="img_cover image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
+            <div class="img_contain image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               <img :src="detail.customerSignImage | imageShow(imageBaseUrl)" alt="">
             </div>
           </div>
@@ -144,6 +144,7 @@ export default {
         self.message = res.data.msg
         self.isShow.toast = true
         if (res.data.code === 200) {
+          this.$store.dispatch("app/getAgentMsg", this.$route.query.companyId);
           setTimeout(function() {
             self.$router.push({ path: '/m/agentMange', query: { companyId: self.detail.companyId }})
           }, 1000)
