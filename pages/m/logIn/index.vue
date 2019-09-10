@@ -53,11 +53,26 @@ export default {
   methods: {
     logIn() {
       const self = this
-      this.message = '登录成功'
-      this.isShow.toast = true
-      setTimeout(function() {
-        self.$router.push({ path: '/m' })
-      }, 1500)
+      if (self.login.name === '') {
+        self.message = '请输入管理员账号!'
+        self.isShow.toast = true
+        return
+      }
+      this.$axios({
+        url: '/api/manager/login',
+        method: 'post',
+        data: {
+          username: self.login.name,
+          password: self.login.password
+        }
+      }).then(res => {
+        if (res.data.code === 200) {
+          self.$router.push({ path: '/m' })
+        } else {
+          self.message = res.data.msg
+          self.isShow.toast = true
+        }
+      })
     }
   }
 }

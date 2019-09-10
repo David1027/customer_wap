@@ -2,16 +2,16 @@
   <div>
     <!-- 客户列表 -->
     <div class="client_list" v-if="clientList.length > 0">
-      <div class="client_item" v-for="(item,index) in clientList" :key="index" @click="skip()">
+      <div class="client_item" v-for="(item,index) in clientList" :key="index" @click="skip(item.id)">
         <div class="content">
           <p class="company_name">
-            {{item.customerName}}
+            {{ item.customerName }}
           </p>
           <p class="client_text">
-            客户姓名: {{item.customerContact}}
+            客户姓名: {{ item.customerContact }}
           </p>
           <p class="client_text">
-            联系方式: {{item.customerPhone}}
+            联系方式: {{ item.customerPhone }}
           </p>
         </div>
         <div class="status">
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     skip(clientId) {
-      this.$router.push({ path: '/m/detail/', query: { clientId: clientId }})
+      this.$router.push({ path: '/m/detail', query: { clientId: clientId }})
     }
   }
 }
@@ -56,6 +56,7 @@ export default {
   box-shadow: 0px 0px 16px 0px rgba(50, 50, 50, 0.29);
   border-radius: pxToRem(20);
   padding: pxToRem(10) 0;
+  margin-bottom: pxToRem(60);
 
   .client_item{
     height: pxToRem(165);

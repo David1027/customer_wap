@@ -7,5 +7,6 @@
 export default {
   countrys: state => state.app.country,
   language: state => state.app.language,
-  navImgShow: state => state.app.navImgShow
+  navImgShow: state => state.app.navImgShow,
+  imageBaseUrl: state => state.app.imageBaseUrl
 }
