@@ -11,23 +11,28 @@ import rem from "~/assets/js/rem";
 
 export default {
   data() {
-    return {};
+    return {
+      first: true
+    };
   },
   watch: {
     $route() {
-      if (this.$route.query.companyId) {
-        this.$store.dispatch('app/getAgentMsg', this.$route.query.companyId)
+      if (this.$route.query.companyId && this.first) {
+        this.getAgentMsg();
       }
     }
   },
   mounted() {
-    if (this.$route.query.companyId) {
-      this.$store.dispatch('app/getAgentMsg', this.$route.query.companyId)
+    if (this.$route.query.companyId && this.first) {
+      this.getAgentMsg();
     }
     rem();
   },
   methods: {
-
+    getAgentMsg() {
+      this.$store.dispatch("app/getAgentMsg", this.$route.query.companyId);
+      this.first = false;
+    }
   },
   head() {
     return {

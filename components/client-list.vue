@@ -2,7 +2,7 @@
   <div>
     <!-- 客户列表 -->
     <div class="client_list" v-if="clientList.length > 0">
-      <div class="client_item" v-for="(item,index) in clientList" :key="index" @click="skip(item.id)">
+      <div class="client_item" v-for="(item,index) in clientList" :key="index" @click="skip(item.id,item.companyId)">
         <div class="content">
           <p class="company_name">
             {{ item.customerName }}
@@ -40,8 +40,8 @@ export default {
   mounted() {
   },
   methods: {
-    skip(clientId) {
-      this.$router.push({ path: '/m/detail', query: { clientId: clientId }})
+    skip(clientId,companyId) {
+      this.$router.push({ path: '/m/detail', query: { companyId: companyId, clientId: clientId }})
     }
   }
 }
