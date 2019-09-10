@@ -1,84 +1,42 @@
 <template>
-  <!-- 中介管理 -->
+  <!-- 中介 -- 添加客户 -->
   <div id="agentMange">
     <img src="~/assets/images/logo.jpg" class="logo" />
     <h2 class="agent-name">{{$store.state.app.agentName}}</h2>
     <div class="agent-msg">
       <p class="agent-customer">客户数：{{$store.state.app.agentCusNum}}</p>
-      <button @click="$router.push({path:'/m/addCustome',query:$route.query})">添加客户</button>
+      <p class="agent-contact">
+        联系方式：
+        <span>{{$store.state.app.agentPhone}}</span>
+      </p>
     </div>
     <div class="bottom-con">
-      <ClientList :client-list="clientList"></ClientList>
+      <companyForm @sendSuccess="submitSuccess"></companyForm>
     </div>
   </div>
 </template>
 
 <script>
-import ClientList from "~/components/client-list";
-import isReachBottom from "~/assets/js/isReachBottom";
+import companyForm from "~/components/companyForm";
 export default {
   components: {
-    ClientList
+    companyForm
   },
   data() {
-    return {
-      clientList: [],
-      page: 0,
-      size: 10
-    };
+    return {};
   },
   mounted() {
-    this.getCustomeList();
-    document.addEventListener("scroll", this.getHeight);
+
   },
   methods: {
-    // 获取客户列表
-    getCustomeList() {
-      this.$axios
-        .get("/api/customer/list", {
-          params: {
-            companyId: this.$route.query.companyId,
-            page: this.page,
-            size: this.size
-          }
-        })
-        .then(res => {
-          if (res.data.code == 200) {
-            if (res.data.result.items.length != 0) {
-              if (!this.page) {
-                this.$set(this, "clientList", res.data.result.items);
-                this.$store.commit("app/SET_agentCusNum", this.total);
-              } else {
-                let data = this.clientList.concat(res.data.result.items);
-                this.$set(this, "clientList", data);
-              }
-            }else{
-              this.page --
-            }
-          } else {
-            let msg = res.data.msg || "获取客户列表失败";
-            this.showToast(msg);
-          }
-        });
-    },
     // 添加或者修改成功
     submitSuccess() {
-      this.addCustome = true;
-      this.page = 0
-      this.getCustomeList()
-    },
-    // 监听文档是否到底
-    getHeight() {
-      if (isReachBottom()) {
-        console.log("到底了");
-        this.page++;
-        this.getCustomeList();
-      }
+      this.$router.push({
+        path: "/m/agentMange",
+        query: this.$route.query
+      });
     }
-  },
-  beforeDestroy() {
-    document.removeEventListener("scroll", this.getHeight);
-  },
+  }
 };
 </script>
 
