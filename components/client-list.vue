@@ -15,8 +15,8 @@
           </p>
         </div>
         <div class="status">
-          <div class="status_item item1" v-if="item.isRegister">已登记</div>
-          <div class="status_item item2" v-if="item.isSign">已签约</div>
+          <div class="status_item item1" :class="{'item-show' : item.isRegister}">已登记</div>
+          <div class="status_item item2" :class="{'item-show' : item.isSign}">已签约</div>
         </div>
       </div>
     </div>
@@ -98,6 +98,7 @@ export default {
         border: 1px solid rgba(255, 255, 255, 0);
         border-radius: 50%;
         overflow: hidden;
+        opacity: 0;
         &.item1{
           border-color: #00a0e9;
           color: #00a0e9;
@@ -105,6 +106,9 @@ export default {
         &.item2{
           border-color: #ed4855;
           color: #ed4855;
+        }
+        &.item-show{
+          opacity: 1;
         }
       }
     }
