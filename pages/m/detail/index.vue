@@ -44,6 +44,7 @@
             <p class="table_title" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               《客户信息登记表》
             </p>
+
             <div class="img_cover image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
