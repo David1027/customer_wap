@@ -5,7 +5,7 @@
     <h2 class="agent-name">{{$store.state.app.agentName}}</h2>
     <div class="agent-msg">
       <p class="agent-customer">客户数：{{$store.state.app.agentCusNum}}</p>
-      <button @click="$router.push({path:'/m/addCustome',query:$route.query})">添加客户</button>
+      <button v-if="!$store.state.app.isSuperManager" @click="$router.push({path:'/m/addCustome',query:$route.query})">添加客户</button>
     </div>
     <div class="bottom-con">
       <ClientList :client-list="clientList"></ClientList>
