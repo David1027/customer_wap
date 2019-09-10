@@ -40,14 +40,18 @@
           </div>
         </div>
         <div class="content_table">
-          <p class="table_title">
-            《客户信息登记表》
-          </p>
           <div class="image_box">
-            <div class="img_contain image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
+            <p class="table_title" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
+              《客户信息登记表》
+            </p>
+
+            <div class="img_cover image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
-            <div class="img_contain image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
+            <p class="table_title" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
+              《签约合同》
+            </p>
+            <div class="img_cover image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               <img :src="detail.customerSignImage | imageShow(imageBaseUrl)" alt="">
             </div>
           </div>
@@ -243,16 +247,16 @@ export default {
     }
     .content_table{
       padding-top: pxToRem(70);
-      .table_title{
-        @include font-dpr(28);
-        color: #999999;
-        text-align: center;
-      }
     }
     .image_box{
       width: 100%;
       margin-top: pxToRem(40);
 
+      .table_title{
+        @include font-dpr(28);
+        color: #999999;
+        text-align: center;
+      }
       .image{
         width: 100%;
         height: pxToRem(430);
