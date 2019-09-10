@@ -169,8 +169,9 @@ export default {
       let reg = {
         phone: /^1\d{10}$/
       };
-      if (value == "") {
+      if (value == "" && value != false) {
         this.showToast("请输入" + titles[name]);
+        console.log(name, value)
         return false;
       } else {
         if (reg[name]) {

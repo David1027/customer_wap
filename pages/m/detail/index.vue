@@ -54,12 +54,12 @@
         </div>
       </div>
     </div>
-    <div class="fixed_button">
+    <div class="fixed_button" v-if="!$store.state.app.isSuperManager">
       <div class="button">
         <span @click="screenDialog = true">删除</span>
       </div>
       <div class="button item1">
-        <span @click="$router.push({ path: '/m/addCustome', query: {id: detail.id}})">编辑</span>
+        <span @click="$router.push({ path: '/m/addCustome', query: {companyId: detail.companyId,id: detail.id}})">编辑</span>
       </div>
       <div class="button item2">
         <span>转移</span>

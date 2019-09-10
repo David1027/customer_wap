@@ -33,7 +33,9 @@ export default {
     submitSuccess() {
       this.$router.push({
         path: "/m/agentMange",
-        query: this.$route.query
+        query: {
+          companyId: this.$route.query.companyId
+        }
       });
     }
   }

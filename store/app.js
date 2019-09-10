@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 export const state = () => ({
   userInfo: {},
   imageBaseUrl: 'http://xieliaobaba.oss-cn-hangzhou.aliyuncs.com/',
+  isSuperManager: false, // 超级管理员
   agentName: '', // 中介公司名称
   agentCusNum: '', // 中介公司客户数量
   agentPhone: '' // 中介公司电话
@@ -10,6 +11,9 @@ export const state = () => ({
 export const mutations = {
   SET_USERINFO(state, userInfo) {
     state.userInfo = userInfo
+  },
+  SET_isSuperManager(state, local) {
+    state.isSuperManager = local
   },
   SET_agent(state, local) {
     state.agentName = local.companyName

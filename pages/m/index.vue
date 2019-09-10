@@ -53,6 +53,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit('app/SET_isSuperManager', true)
     this.gainAgencyList()
     this.gainClientList()
     window.addEventListener('scroll', this.scrollBottom)

@@ -67,6 +67,7 @@ export default {
         }
       }).then(res => {
         if (res.data.code === 200) {
+          this.$store.commit('app/SET_isSuperManager', true)
           self.$router.push({ path: '/m' })
         } else {
           self.message = res.data.msg
