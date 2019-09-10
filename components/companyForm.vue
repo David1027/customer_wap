@@ -91,7 +91,7 @@ export default {
     };
   },
   mounted() {
-    if (this.$route.query.id) {
+    if (this.isChange) {
       this.getMsgId();
     }
   },
