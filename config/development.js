@@ -7,7 +7,7 @@ module.exports = {
   HOST: '0.0.0.0',
   PORT: 80,
   proxy: {
-    '/api': 'http://192.168.40.25:8080',
-    '/upload': 'http://192.168.40.25:8080'
+    '/api': 'http://localhost:8080',
+    '/upload': 'http://localhost:8080'
   }
 }

@@ -2,24 +2,24 @@
   <div>
     <!-- 中介公司列表 -->
     <div class="agency_list" v-if="agencyList.length > 0">
-      <div v-for="(item,index) in agencyList" :key="index" class="agency_item" @click="skip()">
+      <div v-for="(item,index) in agencyList" :key="index" class="agency_item" @click="skip(item.id)">
         <div class="title">
           <p class="company_name">
-            中介公司名称
+            {{ item.companyName }}
           </p>
           <p class="contract_name">
-            签约人名称
+            {{ item.createName }}
           </p>
         </div>
         <div class="status">
           <div class="status_item item1">
             登记: <span class="number">
-            11
+            {{ item.registerCount }}
           </span>
           </div>
           <div class="status_item item2">
             签约: <span class="number">
-            22
+            {{ item.signCount }}
           </span>
           </div>
         </div>
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     skip(agencyId) {
-      this.$router.push({ path: '/m/agentMange', query: { agencyId: agencyId }})
+      this.$router.push({ path: '/m/agentMange', query: { companyId: agencyId }})
     }
   }
 }
@@ -61,6 +61,7 @@ export default {
   box-shadow: 0px 0px 16px 0px rgba(50, 50, 50, 0.29);
   border-radius: pxToRem(20);
   padding: pxToRem(10) 0;
+  margin-bottom: pxToRem(60);
 
   .agency_item{
     height: pxToRem(165);
