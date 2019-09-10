@@ -45,10 +45,10 @@
           </p>
           <div class="image_box">
             <div class="img_cover image">
-              <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
+              <img :src="detail.customerRegisterImage | imgUrl" alt="">
             </div>
             <div class="img_cover image">
-              <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
+              <img :src="detail.customerSignImage | imgUrl" alt="">
             </div>
           </div>
         </div>

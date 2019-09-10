@@ -11,7 +11,7 @@
       </p>
     </div>
     <div class="bottom-con">
-      <companyForm @sendSuccess="submitSuccess"></companyForm>
+      <companyForm @sendSuccess="submitSuccess" :isChange="$route.query.id ? true : false"></companyForm>
     </div>
   </div>
 </template>

@@ -130,7 +130,10 @@ export default {
         }
       })
     }
-  }
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.scrollBottom)
+  },
 }
 </script>
 
