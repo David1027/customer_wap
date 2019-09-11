@@ -4,7 +4,7 @@ import {
 } from '@/utils/auth'
 import getCookie from '@/utils/serverGetCookie.js'
 
-export default function ({
+export default function({
   $axios,
   redirect,
   store,

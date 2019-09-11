@@ -257,6 +257,7 @@ export default {
         @include font-dpr(28);
         color: #999999;
         text-align: center;
+        margin-bottom: 20px;
       }
       .image{
         width: 100%;

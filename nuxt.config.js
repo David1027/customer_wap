@@ -16,7 +16,8 @@ module.exports = {
 
   head: {
     title: pkg.name,
-    meta: [{
+    meta: [
+      {
         charset: 'utf-8'
       }, {
         name: 'viewport',
