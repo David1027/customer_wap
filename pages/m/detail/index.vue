@@ -48,12 +48,12 @@
             <div class="image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
-            <p class="table_title" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
+            <!-- <p class="table_title" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               《签约合同》
             </p>
             <div class="image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               <img :src="detail.customerSignImage | imageShow(imageBaseUrl)" alt="">
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

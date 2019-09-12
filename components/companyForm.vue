@@ -37,7 +37,7 @@
           />
           <img class="show-img" :src="customerRegisterImage | imgUrl" />
         </div>
-        <div class="upimg-con">
+        <!-- <div class="upimg-con">
           <p class="name">签约合同</p>
           <el-upload
             :show-file-list="false"
@@ -48,7 +48,7 @@
           >
             <button>上传</button>
           </el-upload>
-        </div>
+        </div> -->
         <div class="company-msg contact" v-show="customerSignImage != null">
           <img
             class="cancle"
