@@ -109,14 +109,8 @@ export default {
         .then(res => {
           if (res.data.code == 200) {
             this.$set(this, "form", res.data.result);
-            this.customerRegisterImage =
-              this.form.customerRegisterImage == ""
-                ? null
-                : this.form.customerRegisterImage;
-            this.customerSignImage =
-              this.form.customerSignImage == ""
-                ? null
-                : this.form.customerSignImage;
+            this.customerRegisterImage = this.form.customerRegisterImage;
+            this.customerSignImage = this.form.customerSignImage;
           } else {
             let msg = res.data.msg || "获取详情失败";
             this.showToast(msg);
