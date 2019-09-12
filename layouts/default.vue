@@ -15,7 +15,7 @@ export default {
     };
   },
   watch: {
-    '$route.query.companyId'() {
+    $route() {
       if (this.$route.query.companyId) {
         this.getAgentMsg();
       }

@@ -144,7 +144,6 @@ export default {
         self.message = res.data.msg
         self.isShow.toast = true
         if (res.data.code === 200) {
-          this.$store.dispatch("app/getAgentMsg", this.$route.query.companyId);
           setTimeout(function() {
             self.$router.push({ path: '/m/agentMange', query: { companyId: self.detail.companyId }})
           }, 1000)
