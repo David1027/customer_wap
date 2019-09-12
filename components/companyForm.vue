@@ -24,6 +24,7 @@
             action="/upload"
             accept="image/*"
             :on-success="msgSuccess"
+            :before-upload="beforeUpload"
           >
             <button>上传</button>
           </el-upload>
@@ -43,6 +44,7 @@
             action="/upload"
             accept="image/*"
             :on-success="contactSuccess"
+            :before-upload="beforeUpload"
           >
             <button>上传</button>
           </el-upload>
@@ -96,29 +98,6 @@ export default {
     }
   },
   methods: {
-    submit() {
-      if (
-        this.customerRegisterImage == null &&
-        this.customerSignImage == null
-      ) {
-        this.showToast("请上传《客户信息登记表》\n或《签约合同》");
-        return false;
-      }
-      this.form["customerRegisterImage"] = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
-      this.form["customerSignImage"] = this.customerSignImage == null ? undefined : this.customerSignImage;
-      for (let i in this.form) {
-        if (!this.testForm(i, this.form[i])) {
-          return false;
-        }
-      }
-      if (!this.$route.query.id) {
-        this.form["companyId"] = this.$route.query.companyId;
-        this.send("/api/customer/save");
-      } else {
-        delete this.form["createTime"];
-        this.send("/api/customer/update");
-      }
-    },
     // 获取详情
     getMsgId() {
       this.$axios
@@ -144,6 +123,34 @@ export default {
           }
         });
     },
+    // 提交表单
+    submit() {
+      if (
+        this.customerRegisterImage == null &&
+        this.customerSignImage == null
+      ) {
+        this.showToast("请上传《客户信息登记表》\n或《签约合同》");
+        return false;
+      }
+      this.form["customerRegisterImage"] =
+        this.customerRegisterImage == null
+          ? undefined
+          : this.customerRegisterImage;
+      this.form["customerSignImage"] =
+        this.customerSignImage == null ? undefined : this.customerSignImage;
+      for (let i in this.form) {
+        if (!this.testForm(i, this.form[i])) {
+          return false;
+        }
+      }
+      if (!this.$route.query.id) {
+        this.form["companyId"] = this.$route.query.companyId;
+        this.send("/api/customer/save");
+      } else {
+        delete this.form["createTime"];
+        this.send("/api/customer/update");
+      }
+    },
     // 发送表单
     send(url) {
       this.$axios.post(url, this.form).then(res => {
@@ -151,7 +158,7 @@ export default {
           let msg = this.$route.query.id ? "修改成功" : "添加成功";
           this.showToast(msg);
           setTimeout(() => {
-            this.$emit('sendSuccess')
+            this.$emit("sendSuccess");
           }, 2000);
         } else {
           let msg = res.data.msg || "添加失败";
@@ -189,11 +196,18 @@ export default {
     },
     // 图片上传成功
     msgSuccess(res) {
-      console.log(res);
       this.customerRegisterImage = res.result.url;
     },
     contactSuccess(res) {
       this.customerSignImage = res.result.url;
+    },
+    // 上传前判断的大小
+    beforeUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 10;
+      if (!isLt2M) {
+        this.showToast("图片大小不能超过 10MB!");
+      }
+      return isLt2M;
     },
     // 删除图片
     imgCancle(name) {
