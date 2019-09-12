@@ -130,10 +130,10 @@ export default {
           if (!this.testForm(i, this.form[i])) {
             return false;
           }
-        }else{
-          this.form[i] = this[i] == null ? undefined : this[i];
         }
       }
+      this.form.customerRegisterImage = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
+      this.form.customerSignImage = this.customerSignImage == null ? undefined : this.customerSignImage;
       if (
         this.customerRegisterImage == null &&
         this.customerSignImage == null
