@@ -80,9 +80,9 @@ export default {
   data() {
     return {
       form: {
-        customerContact: "",
-        customerContact: "",
-        customerPhone: ""
+        customerName: null,
+        customerContact: null,
+        customerPhone: null
       },
       customerRegisterImage: null, // 客户信息图片
       customerSignImage: null, // 合同图片
@@ -125,23 +125,21 @@ export default {
     },
     // 提交表单
     submit() {
+      for (let i in this.form) {
+        if (i != "customerSignImage" && i != "customerRegisterImage") {
+          if (!this.testForm(i, this.form[i])) {
+            return false;
+          }
+        }else{
+          this.form[i] = this[i] == null ? undefined : this[i];
+        }
+      }
       if (
         this.customerRegisterImage == null &&
         this.customerSignImage == null
       ) {
         this.showToast("请上传《客户信息登记表》\n或《签约合同》");
         return false;
-      }
-      this.form["customerRegisterImage"] =
-        this.customerRegisterImage == null
-          ? undefined
-          : this.customerRegisterImage;
-      this.form["customerSignImage"] =
-        this.customerSignImage == null ? undefined : this.customerSignImage;
-      for (let i in this.form) {
-        if (!this.testForm(i, this.form[i])) {
-          return false;
-        }
       }
       if (!this.$route.query.id) {
         this.form["companyId"] = this.$route.query.companyId;
@@ -176,7 +174,7 @@ export default {
       let reg = {
         customerPhone: /^1\d{10}$/
       };
-      if (value == "" && value != false) {
+      if (value == null) {
         this.showToast("请输入" + titles[name]);
         return false;
       } else {
@@ -203,9 +201,9 @@ export default {
     },
     // 上传前判断的大小
     beforeUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 10;
+      const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.showToast("图片大小不能超过 10MB!");
+        this.showToast("图片大小不能超过 2MB!");
       }
       return isLt2M;
     },

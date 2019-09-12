@@ -45,13 +45,13 @@
               《客户信息登记表》
             </p>
 
-            <div class="img_contain image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
+            <div class="image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
               <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
             <p class="table_title" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               《签约合同》
             </p>
-            <div class="img_contain image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
+            <div class="image" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               <img :src="detail.customerSignImage | imageShow(imageBaseUrl)" alt="">
             </div>
           </div>
@@ -262,6 +262,9 @@ export default {
         width: 100%;
         height: pxToRem(430);
         margin-bottom: pxToRem(30);
+        img{
+          width: 100%;
+        }
       }
     }
   }
