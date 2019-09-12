@@ -56,7 +56,7 @@
             @click="imgCancle('customerSignImage')"
           />
           <img class="show-img" :src="customerSignImage | imgUrl" />
-        </div> -->
+        </div>-->
       </div>
     </div>
     <button class="submit" @click="submit">{{ isChange ? '确认' : '添加'}}</button>
@@ -120,18 +120,22 @@ export default {
     // 提交表单
     submit() {
       for (let i in this.form) {
+        if (this.form[i] == "" && typeof this.form[i] != "boolean") {
+          this.form[i] = null;
+        }
         if (i != "customerSignImage" && i != "customerRegisterImage") {
-          if(this.form[i] == '' && typeof(this.form[i]) != 'boolean'){
-            this.form[i] = null
-          }
           if (!this.testForm(i, this.form[i])) {
             return false;
           }
         }
       }
-      this.form.customerRegisterImage = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
-      this.form.customerSignImage = this.customerSignImage == null ? undefined : this.customerSignImage;
-      console.log(this.form)
+      this.form.customerRegisterImage =
+        this.customerRegisterImage == null
+          ? undefined
+          : this.customerRegisterImage;
+      this.form.customerSignImage =
+        this.customerSignImage == null ? undefined : this.customerSignImage;
+      console.log(this.form);
       if (
         this.customerRegisterImage == null &&
         this.customerSignImage == null
