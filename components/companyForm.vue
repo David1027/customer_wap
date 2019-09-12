@@ -135,7 +135,6 @@ export default {
           : this.customerRegisterImage;
       this.form.customerSignImage =
         this.customerSignImage == null ? undefined : this.customerSignImage;
-      console.log(this.form);
       if (
         this.customerRegisterImage == null &&
         this.customerSignImage == null
