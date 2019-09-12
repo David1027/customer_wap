@@ -48,7 +48,7 @@
           >
             <button>上传</button>
           </el-upload>
-        </div> -->
+        </div>
         <div class="company-msg contact" v-show="customerSignImage != null">
           <img
             class="cancle"
@@ -56,7 +56,7 @@
             @click="imgCancle('customerSignImage')"
           />
           <img class="show-img" :src="customerSignImage | imgUrl" />
-        </div>
+        </div> -->
       </div>
     </div>
     <button class="submit" @click="submit">{{ isChange ? '确认' : '添加'}}</button>
@@ -110,7 +110,7 @@ export default {
           if (res.data.code == 200) {
             this.$set(this, "form", res.data.result);
             this.customerRegisterImage = this.form.customerRegisterImage;
-            // this.customerSignImage = this.form.customerSignImage;
+            this.customerSignImage = this.form.customerSignImage;
           } else {
             let msg = res.data.msg || "获取详情失败";
             this.showToast(msg);
@@ -130,9 +130,13 @@ export default {
         }
       }
       this.form.customerRegisterImage = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
-      // this.form.customerSignImage = this.customerSignImage == null ? undefined : this.customerSignImage;
-      if ( this.customerRegisterImage == null ) {
-        this.showToast("请上传《客户信息登记表》\n或《签约合同》");
+      this.form.customerSignImage = this.customerSignImage == null ? undefined : this.customerSignImage;
+      console.log(this.form)
+      if (
+        this.customerRegisterImage == null &&
+        this.customerSignImage == null
+      ) {
+        this.showToast("请上传《客户信息登记表》");
         return false;
       }
       if (!this.$route.query.id) {

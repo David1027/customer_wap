@@ -17,9 +17,9 @@
       <div class="content">
         <div class="content_info">
           <div class="status">
-            <div v-show="detail.isSign" class="status_item item1">
+            <!-- <div v-show="detail.isSign" class="status_item item1">
               已签约
-            </div>
+            </div> -->
             <div v-show="detail.isRegister" class="status_item item2">
               已登记
             </div>
