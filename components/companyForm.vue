@@ -125,8 +125,12 @@ export default {
     },
     // 提交表单
     submit() {
+      console.log(this.form)
       for (let i in this.form) {
         if (i != "customerSignImage" && i != "customerRegisterImage") {
+          if(this.form[i] == '' && typeof(this.form[i]) != 'boolean'){
+            this.form[i] = null
+          }
           if (!this.testForm(i, this.form[i])) {
             return false;
           }
