@@ -16,7 +16,7 @@
         </div>
         <div class="status">
           <div class="status_item item1" :class="{'item-show' : item.isRegister}">已登记</div>
-          <!-- <div class="status_item item2" :class="{'item-show' : item.isSign}">已签约</div> -->
+          <div class="status_item item2" :class="{'item-show' : item.isSign}">已签约</div>
         </div>
       </div>
     </div>

@@ -129,16 +129,9 @@ export default {
           }
         }
       }
-      this.form.customerRegisterImage =
-        this.customerRegisterImage == null
-          ? undefined
-          : this.customerRegisterImage;
-      this.form.customerSignImage =
-        this.customerSignImage == null ? undefined : this.customerSignImage;
-      if (
-        this.customerRegisterImage == null &&
-        this.customerSignImage == null
-      ) {
+      this.form.customerRegisterImage = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
+      this.form.customerSignImage = this.customerSignImage == null ? undefined : this.customerSignImage;
+      if (this.customerRegisterImage == null && this.customerSignImage == null) {
         this.showToast("请上传《客户信息登记表》");
         return false;
       }
