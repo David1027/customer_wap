@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 export const state = () => ({
   userInfo: {},
-  imageBaseUrl: 'http://xieliaobaba.oss-cn-hangzhou.aliyuncs.com/',
+  imageBaseUrl: 'http://xieliaobaba.oss-cn-hangzhou.aliyuncs.com',
   isSuperManager: false, // 超级管理员
   agentName: '', // 中介公司名称
   agentCusNum: '', // 中介公司客户数量
