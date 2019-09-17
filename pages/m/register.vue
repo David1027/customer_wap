@@ -37,7 +37,7 @@ export default {
   methods: {
     submit() {
       this.form.companyOpenid = this.$route.query.Openid;
-      this.form.createName = this.$route.query.SalesName;
+      this.form.createName = decodeURI(this.$route.query.SalesName);
       for (let i in this.form) {
         if (!this.testForm(i, this.form[i])) {
           return false;
