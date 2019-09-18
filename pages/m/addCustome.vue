@@ -11,7 +11,9 @@
       </p>
     </div>
     <div class="bottom-con">
-      <companyForm @sendSuccess="submitSuccess" :isChange="$route.query.id ? true : false"></companyForm>
+      <companyForm
+        @sendSuccess="submitSuccess"
+        :isChange="$route.query.id ? true : false"></companyForm>
     </div>
   </div>
 </template>
@@ -44,21 +46,25 @@ export default {
 
 <style lang="scss" scoped>
 @import "~/assets/css/_mixin.scss";
+
 #agentMange {
   background-repeat: no-repeat;
   background-size: pxToRem(524);
-  background-image: url("../../assets/images/banner-back.png");
   background-position: pxToRem(386) pxToRem(-238);
+  background-image: url("../../assets/images/banner-back.png");
   padding: 0 0 pxToRem(60);
+
   .logo {
     width: pxToRem(200);
     padding: pxToRem(48) pxToRem(0) pxToRem(69) pxToRem(35);
   }
+
   .agent-name {
     @include font-dpr(32);
     color: #333333;
     padding: pxToRem(0) pxToRem(0) pxToRem(12) pxToRem(45);
   }
+
   .agent-msg {
     height: pxToRem(92);
     padding: pxToRem(0) pxToRem(42) pxToRem(50) pxToRem(45);
@@ -66,10 +72,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .agent-customer {
       @include font-dpr(28);
       color: #24487d;
     }
+
     button {
       width: pxToRem(183);
       height: pxToRem(64);
@@ -79,20 +87,25 @@ export default {
       @include font-dpr(30);
       color: #ffffff;
     }
+
     .agent-contact {
       @include font-dpr(28);
       color: #999999;
+
       span {
         color: #333333;
         margin-left: 5px;
       }
     }
   }
+
   .bottom-con {
     padding: pxToRem(40) pxToRem(30) pxToRem(0);
-    > div {
+
+    >div {
       width: 100%;
     }
+
     .no-customer {
       height: pxToRem(708);
       @include font-dpr(28);

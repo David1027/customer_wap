@@ -1,20 +1,28 @@
 <template>
   <!-- 公司信息表单 -->
   <div id="companyForm">
-    <div class="company-form" :class="{'isChage' : isChange}">
+    <div
+      class="company-form"
+      :class="{'isChage' : isChange}">
       <h3 v-if="!isChange">添加客户</h3>
       <h3 v-else>修改资料</h3>
       <div class="form-add-box">
         <div class="input-con">
-          <p class="label" v-if="isChange">公司名称</p>
+          <p
+            class="label"
+            v-if="isChange">公司名称</p>
           <input type="text" placeholder="请输入公司名称" v-model="form.customerName" />
         </div>
         <div class="input-con">
-          <p class="label" v-if="isChange">客户名称</p>
+          <p
+            class="label"
+            v-if="isChange">客户名称</p>
           <input type="text" placeholder="请输入客户名称" v-model="form.customerContact" />
         </div>
         <div class="input-con">
-          <p class="label" v-if="isChange">联系方式</p>
+          <p
+            class="label"
+            v-if="isChange">联系方式</p>
           <input type="text" placeholder="请输入客户联系方式" v-model="form.customerPhone" />
         </div>
         <div class="upimg-con">
@@ -23,19 +31,26 @@
             :show-file-list="false"
             action="/upload"
             accept="image/*"
-            :on-success="msgSuccess"
-            :before-upload="beforeUpload"
-          >
+            :on-success="(res) => {
+              return this.imgSuccess(res, 'customerRegisterImage', 'registerImgLoad')
+            }"
+            :before-upload="(file) => {
+              return this.beforeUpload(file, 'registerImgLoad')
+            }">
             <button>上传</button>
           </el-upload>
         </div>
-        <div class="company-msg" v-show="customerRegisterImage != null">
-          <img
-            class="cancle"
-            src="~/assets/images/cancle.png"
-            @click="imgCancle('customerRegisterImage')"
-          />
+        <div
+          class="company-msg"
+          v-show="customerRegisterImage != null">
+          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('customerRegisterImage')" />
           <img class="show-img" :src="customerRegisterImage | imgUrl" />
+        </div>
+        <div
+          class="load-img"
+          v-show="registerImgLoad">
+          <img v-show="registerImgLoad" class="show-img" src="~/assets/images/download.gif" alt />
+          <p>图片上传中，请稍候...</p>
         </div>
         <!-- <div class="upimg-con">
           <p class="name">签约合同</p>
@@ -44,24 +59,23 @@
             action="/upload"
             accept="image/*"
             :on-success="contactSuccess"
-            :before-upload="beforeUpload"
-          >
+            :before-upload="beforeUpload">
             <button>上传</button>
           </el-upload>
         </div>
-        <div class="company-msg contact" v-show="customerSignImage != null">
-          <img
-            class="cancle"
-            src="~/assets/images/cancle.png"
-            @click="imgCancle('customerSignImage')"
-          />
+        <div
+          class="company-msg contact"
+          v-show="customerSignImage != null">
+          <img class="cancle" src="~/assets/images/cancle.png" @click="imgCancle('customerSignImage')" />
           <img class="show-img" :src="customerSignImage | imgUrl" />
         </div>-->
       </div>
     </div>
     <button class="submit" @click="submit">{{ isChange ? '确认' : '添加'}}</button>
 
-    <toast :isShow="showMsg" :message="message"></toast>
+    <toast
+      :isShow="showMsg"
+      :message="message"></toast>
   </div>
 </template>
 
@@ -85,10 +99,14 @@ export default {
         customerPhone: null
       },
       customerRegisterImage: null, // 客户信息图片
+      registerImgLoad: false, // 客户信息图片加载
       customerSignImage: null, // 合同图片
+      signImgLoad: false, // 客户合同图片加载
 
       // toast组件的值
-      showMsg: { toast: false },
+      showMsg: {
+        toast: false
+      },
       message: "已完成"
     };
   },
@@ -129,9 +147,16 @@ export default {
           }
         }
       }
-      this.form.customerRegisterImage = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
-      this.form.customerSignImage = this.customerSignImage == null ? undefined : this.customerSignImage;
-      if (this.customerRegisterImage == null && this.customerSignImage == null) {
+      this.form.customerRegisterImage =
+        this.customerRegisterImage == null ?
+        undefined :
+        this.customerRegisterImage;
+      this.form.customerSignImage =
+        this.customerSignImage == null ? undefined : this.customerSignImage;
+      if (
+        this.customerRegisterImage == null &&
+        this.customerSignImage == null
+      ) {
         this.showToast("请上传《客户信息登记表》");
         return false;
       }
@@ -187,17 +212,18 @@ export default {
       this.message = message;
     },
     // 图片上传成功
-    msgSuccess(res) {
-      this.customerRegisterImage = res.result.url;
-    },
-    contactSuccess(res) {
-      this.customerSignImage = res.result.url;
+    imgSuccess(res, type, name) {
+      this[type] = res.result.url;
+      this[name] = false
     },
     // 上传前判断的大小
-    beforeUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    beforeUpload(file, name) {
+      const isLt2M = file.size / 1024 / 1024 < 10;
       if (!isLt2M) {
-        this.showToast("图片大小不能超过 2MB!");
+        this.showToast("图片大小不能超过 10MB!");
+      }
+      if(isLt2M){
+        this[name] = true
       }
       return isLt2M;
     },
@@ -211,23 +237,28 @@ export default {
 
 <style lang="scss" scoped>
 @import "~/assets/css/_mixin.scss";
+
 #companyForm {
   .company-form {
     background-color: #ffffff;
     box-shadow: 0px 0px pxToRem(16) 0px rgba(50, 50, 50, 0.29);
     border-radius: pxToRem(20);
-    > h3 {
+
+    >h3 {
       padding: pxToRem(60) 0 pxToRem(56);
       text-align: center;
       @include font-dpr(42);
       color: #333333;
     }
+
     .form-add-box {
       padding: 0 pxToRem(70) pxToRem(16);
+
       .input-con {
         display: flex;
         align-items: center;
         margin-bottom: pxToRem(36);
+
         input {
           width: 100%;
           height: pxToRem(80);
@@ -235,19 +266,23 @@ export default {
           border: solid pxToRem(2) #bfbfbf;
           text-indent: pxToRem(28);
         }
+
         &:last-child {
           margin-bottom: pxToRem(76);
         }
       }
+
       .upimg-con {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: pxToRem(60);
         @include font-dpr(28);
+
         .name {
           color: #999999;
         }
+
         button {
           width: pxToRem(130);
           height: pxToRem(60);
@@ -257,6 +292,7 @@ export default {
           color: #008fd7;
         }
       }
+
       .company-msg {
         width: pxToRem(360);
         display: block;
@@ -265,36 +301,63 @@ export default {
         background-color: #ffffff;
         box-shadow: 0px 0px pxToRem(10) 0px rgba(50, 50, 50, 0.4);
         position: relative;
+
         .show-img {
           width: 100%;
         }
+
         .cancle {
           width: pxToRem(64);
           position: absolute;
           top: pxToRem(-32);
           right: pxToRem(-32);
         }
+
         &.contact {
           margin-bottom: pxToRem(60);
         }
       }
+
+      .load-img {
+        width: pxToRem(360);
+        margin: 0 auto;
+        margin-bottom: pxToRem(120);
+        background-color: #ffffff;
+        box-shadow: 0px 0px pxToRem(10) 0px rgba(50, 50, 50, 0.4);
+        position: relative;
+
+        .show-img {
+          width: 100%;
+        }
+
+        p {
+          text-align: center;
+          color: #999999;
+          @include font-dpr(24);
+          padding: pxToRem(20);
+        }
+      }
     }
   }
+
   .isChage {
     .form-add-box {
       padding: 0 pxToRem(40) pxToRem(16);
+
       .input-con {
         .label {
           width: 24%;
           @include font-dpr(28);
           color: #999999;
         }
+
         input {
           width: 76%;
         }
       }
     }
   }
+
   .submit {
     margin-top: pxToRem(50);
     width: 100%;

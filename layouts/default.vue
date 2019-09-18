@@ -128,4 +128,7 @@ input {
   color: #666666;
   border-radius: pxToRem(20);
 }
+.main{
+  background-color: white;
+}
 </style>
