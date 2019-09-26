@@ -61,6 +61,9 @@
       <div class="button item1">
         <span @click="$router.push({ path: '/m/addCustome', query: {isCus: true,id: $route.query.id}})">编辑</span>
       </div>
+      <div class="button">
+        <span @click="screenDialog = true">删除</span>
+      </div>
     </div>
     <toast :is-show="isShow" :message="message" />
     <div class="dialog" v-if="screenDialog" >
@@ -121,6 +124,25 @@ export default {
         } else {
           self.message = res.data.msg
           self.isShow.toast = true
+        }
+      })
+    },
+    // 删除客户
+    deleteClient() {
+      const self = this
+      this.$axios({
+        url: '/api/enterprise/',
+        method: 'delete',
+        params: {
+          id: self.detail.id
+        }
+      }).then(res => {
+        self.message = res.data.msg
+        self.isShow.toast = true
+        if (res.data.code === 200) {
+          setTimeout(function() {
+            self.$router.push({ path: '/m/' })
+          }, 1000)
         }
       })
     }
