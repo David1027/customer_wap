@@ -36,9 +36,6 @@
             <p class="text_item">
               <span class="key">登记时间:</span>{{ detail.createTime }}
             </p>
-            <p class="text_item">
-              <span class="key">登记类别:</span>{{ detail.createTime }}
-            </p>
           </div>
         </div>
         <div class="content_table">
