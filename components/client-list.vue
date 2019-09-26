@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 客户列表 -->
-    <div class="client_list" v-if="clientList.length > 0">
+    <div class="client_list" v-if="clientList.length > 0 && !isCus">
       <div class="client_item" v-for="(item,index) in clientList" :key="index" @click="skip(item.id,item.companyId)">
         <div class="content">
           <p class="company_name">
@@ -20,7 +20,26 @@
         </div>
       </div>
     </div>
-    <div class="noData" v-else>
+    <div class="client_list" v-if="clientList.length > 0 && isCus">
+      <div class="client_item" v-for="(item,index) in clientList" :key="index" @click="skip(item.id)">
+        <div class="content">
+          <p class="company_name">
+            {{ item.enterpriseName }}
+          </p>
+          <p class="client_text">
+            客户姓名: {{ item.enterpriseContact }}
+          </p>
+          <p class="client_text">
+            联系方式: {{ item.enterprisePhone }}
+          </p>
+        </div>
+        <div class="status">
+          <div class="status_item item1" :class="{'item-show' : item.isRegister}">已登记</div>
+          <div class="status_item item2" :class="{'item-show' : item.isSign}">已签约</div>
+        </div>
+      </div>
+    </div>
+    <div class="noData" v-if="clientList.length == 0">
       暂无客户数据...
     </div>
   </div>
@@ -35,13 +54,21 @@ export default {
       default() {
         return []
       }
+    },
+    isCus:{
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
   },
   methods: {
     skip(clientId,companyId) {
-      this.$router.push({ path: '/m/detail', query: { companyId: companyId, clientId: clientId }})
+      if(companyId){
+        this.$router.push({ path: '/m/detail', query: { companyId: companyId, clientId: clientId }})
+      }else{
+        this.$router.push({ path: '/m/detail/customer', query: { id: clientId }})
+      }
     }
   }
 }

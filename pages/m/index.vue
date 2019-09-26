@@ -13,12 +13,18 @@
       </div>
       <div class="nav_item" @click="changeNavShow(1)">
         <p class="number">{{ clientTotal }}</p>
-        <p class="nav_name">客户数</p>
+        <p class="nav_name">中介客户</p>
         <span class="nav_wire" :class="navShow === 1? 'item2' : ''"></span>
+      </div>
+      <div class="nav_item" @click="changeNavShow(2)">
+        <p class="number">{{ curTotal }}</p>
+        <p class="nav_name">入驻客户</p>
+        <span class="nav_wire" :class="navShow === 2? 'item2' : ''"></span>
       </div>
     </div>
     <agency-list v-show="navShow === 0" :agency-list="agencyList"></agency-list>
     <client-list v-show="navShow === 1" :client-list="clientList"></client-list>
+    <client-list v-show="navShow === 2" :client-list="curList" :isCus="true"></client-list>
     <toast :is-show="isShow" :message="message" />
   </div>
 </template>
@@ -39,6 +45,7 @@ export default {
       // 页码
       agencyCurr: 0,
       clientCurr: 0,
+      cusCurr: 0,
       // 每页条数
       limit: 20,
       navShow: 0,
@@ -46,6 +53,8 @@ export default {
       agencyList: [], // 中介公司列表
       clientTotal: 0,
       clientList: [], // 客户列表
+      curTotal: 0,
+      curList: [], // 入驻客户列表
       isShow: {
         toast: false
       },
@@ -56,6 +65,7 @@ export default {
     this.$store.commit('app/SET_isSuperManager', true)
     this.gainAgencyList()
     this.gainClientList()
+    this.gainCurList()
     window.addEventListener('scroll', this.scrollBottom)
   },
   methods: {
@@ -80,6 +90,9 @@ export default {
       } else if (this.navShow === 1) {
         this.clientCurr++
         this.gainClientList()
+      } else if (this.navShow === 2) {
+        this.cusCurr++
+        this.gainCurList()
       }
     },
     // 获取中介公司列表
@@ -129,7 +142,31 @@ export default {
           self.isShow.toast = true
         }
       })
-    }
+    },
+    // 获取入驻客户
+    gainCurList() {
+      const self = this
+      this.$axios({
+        url: '/api/enterprise/list',
+        method: 'get',
+        params: {
+          page: self.cusCurr,
+          size: self.limit
+        }
+      }).then(res => {
+        if (res.data.code === 200) {
+          self.curTotal = res.data.result.total
+          if (!res.data.result.items.length > 0) {
+            self.cusCurr--
+          }
+          let arrayList = self.clientList.concat(res.data.result.items)
+          self.$set(self, 'curList', arrayList)
+        } else {
+          self.message = res.data.msg
+          self.isShow.toast = true
+        }
+      })
+    },
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.scrollBottom)
