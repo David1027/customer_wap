@@ -81,6 +81,13 @@ export default {
       if (this.navShow !== num) {
         this.navShow = num
       }
+      if (this.navShow === 0) {
+        this.gainAgencyList()
+      } else if (this.navShow === 1) {
+        this.gainClientList()
+      } else if (this.navShow === 2) {
+        this.gainCurList()
+      }
     },
     // 切换列表
     cutNavShow() {
