@@ -1,19 +1,6 @@
 <template>
   <div>
     <div class="detail back_box">
-      <div class="header">
-        <div class="img_cover logo">
-          <img src="~/assets/images/logo.jpg" alt="">
-        </div>
-        <div class="company">
-          <p class="company_name">
-            {{ $store.state.app.agentName }}
-          </p>
-          <p class="clients">
-            客户数: <span>{{ $store.state.app.agentCusNum }}</span>
-          </p>
-        </div>
-      </div>
       <div class="content">
         <div class="content_info">
           <div class="status">
@@ -26,27 +13,42 @@
           </div>
           <div class="status_text">
             <p class="text_item">
-              <span class="key">公司名称:</span>{{ detail.customerName }}
+              <span class="key">公司名称:</span>{{ detail.enterpriseName }}
             </p>
             <p class="text_item">
-              <span class="key">负责人:</span>{{ detail.customerContact }}
+              <span class="key">负责人:</span>{{ detail.enterpriseContact }}
             </p>
             <p class="text_item">
-              <span class="key">联系方式:</span>{{ detail.customerPhone }}
+              <span class="key">联系方式:</span>{{ detail.enterprisePhone }}
+            </p>
+            <p class="text_item">
+              <span class="key">企业邮箱:</span>{{ detail.enterpriseEmail }}
+            </p>
+            <p class="text_item">
+              <span class="key">公司地址:</span>{{ detail.enterpriseAddress }}
+            </p>
+            <p class="text_item">
+              <span class="key">鞋类别:</span>{{ detail.enterpriseAttributes }}
+            </p>
+            <p class="text_item">
+              <span class="key">优势产品:</span>{{ detail.enterpriseDescription }}
             </p>
             <p class="text_item">
               <span class="key">登记时间:</span>{{ detail.createTime }}
+            </p>
+            <p class="text_item">
+              <span class="key">登记类别:</span>{{ detail.createTime }}
             </p>
           </div>
         </div>
         <div class="content_table">
           <div class="image_box">
-            <p class="table_title" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
+            <p class="table_title" v-if="detail.enterpriseRegisterImage && detail.enterpriseRegisterImage !== ''">
               《客户信息登记表》
             </p>
 
-            <div class="image" v-if="detail.customerRegisterImage && detail.customerRegisterImage !== ''">
-              <img :src="detail.customerRegisterImage | imageShow(imageBaseUrl)" alt="">
+            <div class="image" v-if="detail.enterpriseRegisterImage && detail.enterpriseRegisterImage !== ''">
+              <img :src="detail.enterpriseRegisterImage | imageShow(imageBaseUrl)" alt="">
             </div>
             <!-- <p class="table_title" v-if="detail.customerSignImage && detail.customerSignImage !== ''">
               《签约合同》
@@ -58,15 +60,9 @@
         </div>
       </div>
     </div>
-    <div class="fixed_button" v-if="!$store.state.app.isSuperManager">
-      <div class="button">
-        <span @click="screenDialog = true">删除</span>
-      </div>
+    <div class="fixed_button">
       <div class="button item1">
-        <span @click="$router.push({ path: '/m/addCustome', query: {companyId: detail.companyId,id: detail.id}})">编辑</span>
-      </div>
-      <div class="button item2">
-        <span>转移</span>
+        <span @click="$router.push({ path: '/m/addCustome', query: {isCus: true,id: $route.query.id}})">编辑</span>
       </div>
     </div>
     <toast :is-show="isShow" :message="message" />
@@ -117,10 +113,10 @@ export default {
     gainDetail() {
       const self = this
       this.$axios({
-        url: '/api/customer/getbyid',
+        url: '/api/enterprise/getbyid',
         method: 'get',
         params: {
-          id: self.$route.query.clientId
+          id: self.$route.query.id
         }
       }).then(res => {
         if (res.data.code === 200) {
@@ -128,25 +124,6 @@ export default {
         } else {
           self.message = res.data.msg
           self.isShow.toast = true
-        }
-      })
-    },
-    // 删除客户
-    deleteClient() {
-      const self = this
-      this.$axios({
-        url: '/api/customer/',
-        method: 'delete',
-        params: {
-          id: self.detail.id
-        }
-      }).then(res => {
-        self.message = res.data.msg
-        self.isShow.toast = true
-        if (res.data.code === 200) {
-          setTimeout(function() {
-            self.$router.push({ path: '/m/agentMange', query: { companyId: self.detail.companyId }})
-          }, 1000)
         }
       })
     }
@@ -163,6 +140,7 @@ export default {
   background-size: pxToRem(524);
   background-position: pxToRem(363) pxToRem(-250);
   margin-bottom: pxToRem(120);
+  padding-top: pxToRem(120);
 
   .header{
     width: 100%;
@@ -277,7 +255,7 @@ export default {
   border-top: pxToRem(1) solid #d2d2d2;
   background-color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 
   .button{
     width: 33%;

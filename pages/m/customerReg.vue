@@ -1,23 +1,11 @@
 <template>
   <!-- 中介 -- 添加客户 -->
   <div id="agentMange">
-    <img src="~/assets/images/logo.jpg" class="logo" v-if="!$route.query.isCus" />
-    <h2
-      class="agent-name"
-      v-if="!$route.query.isCus">{{$store.state.app.agentName}}</h2>
-    <div
-      class="agent-msg"
-      v-if="!$route.query.isCus">
-      <p class="agent-customer">客户数：{{$store.state.app.agentCusNum}}</p>
-      <p class="agent-contact">
-        联系方式：
-        <span>{{$store.state.app.agentPhone}}</span>
-      </p>
-    </div>
     <div class="bottom-con">
       <companyForm
         @sendSuccess="submitSuccess"
-        :isChange="$route.query.id ? true : false"></companyForm>
+        :isChange="$route.query.id ? true : false"
+        :isReg="true"></companyForm>
     </div>
   </div>
 </template>
@@ -37,22 +25,12 @@ export default {
   methods: {
     // 添加或者修改成功
     submitSuccess(id) {
-      if (this.$route.query.isCus) {
-        this.$router.push({
-          path: "/m/detail/customer",
-          query: {
-            id: id
-          }
-        });
-      } else {
-        this.$router.push({
-          path: "/m/agentMange",
-          query: {
-            companyId: this.$route.query.companyId
-          }
-        });
-      }
-
+      this.$router.push({
+        path: "/m/detail/customer",
+        query: {
+          id: id
+        }
+      });
     }
   }
 };

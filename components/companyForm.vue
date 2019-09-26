@@ -4,8 +4,9 @@
     <div
       class="company-form"
       :class="{'isChage' : isChange}">
-      <h3 v-if="!isChange">添加客户</h3>
-      <h3 v-else>修改资料</h3>
+      <h3 v-if="!isChange && !isReg">添加客户</h3>
+      <h3 v-if="isReg && !isChange">客户注册</h3>
+      <h3 v-if="isChange && !isReg">修改资料</h3>
       <div class="form-add-box">
         <div class="input-con">
           <p
@@ -24,6 +25,32 @@
             class="label"
             v-if="isChange">联系方式</p>
           <input type="text" placeholder="请输入客户联系方式" v-model="form.customerPhone" />
+        </div>
+        <div class="input-con">
+          <p
+            class="label"
+            v-if="isChange">企业邮箱</p>
+          <input type="text" placeholder="请输入客户企业邮箱" v-model="email" />
+        </div>
+        <div class="input-con">
+          <p
+            class="label"
+            v-if="isChange">公司地址</p>
+          <input type="text" placeholder="请输入客户公司地址" v-model="address" />
+        </div>
+        <div class="input-con">
+          <p
+            class="label"
+            v-if="isChange">客户类别</p>
+          <div
+            class="select"
+            @click="showSelect = true">{{ selectCate ? selectCate : "请选择所属类别"}}</div>
+        </div>
+        <div class="input-con">
+          <p
+            class="label"
+            v-if="isChange">优势产品</p>
+          <input type="text" placeholder="请输入优势产品" v-model="goodPro" />
         </div>
         <div class="upimg-con">
           <p class="name">客户信息登记表</p>
@@ -71,11 +98,30 @@
         </div>-->
       </div>
     </div>
-    <button class="submit" @click="submit">{{ isChange ? '确认' : '添加'}}</button>
+    <button class="submit" @click="submit" v-if="!isReg">{{ isChange ? '确认' : '添加'}}</button>
+    <button class="submit" @click="submit" v-else>{{ isChange ? '确认' : '注册'}}</button>
 
     <toast
       :isShow="showMsg"
       :message="message"></toast>
+
+    <div
+      class="select-con"
+      v-show="showSelect">
+      <div
+        class="back"
+        @click="showSelect = false"></div>
+      <div class="selects">
+        <!-- <h6>完成</h6> -->
+        <div class="ps">
+          <p
+            class="select"
+            v-for="item,index in options"
+            :key="index"
+            @click="choose(item)">{{item}}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -87,6 +133,10 @@ export default {
   },
   props: {
     isChange: {
+      type: Boolean,
+      default: false
+    },
+    isReg: {
       type: Boolean,
       default: false
     }
@@ -102,7 +152,13 @@ export default {
       registerImgLoad: false, // 客户信息图片加载
       customerSignImage: null, // 合同图片
       signImgLoad: false, // 客户合同图片加载
-
+      showSelect: false, // 展示底部选择宽
+      selectCate: '', // 类比选择
+      goodPro: '', // 优势产品
+      email: '', // 邮箱
+      address: '', // 地址
+      options: ['男鞋', '女鞋', '童鞋', '鞋材辅料', '其他'],
+      otherform: {}, //暂存
       // toast组件的值
       showMsg: {
         toast: false
@@ -112,7 +168,11 @@ export default {
   },
   mounted() {
     if (this.isChange) {
-      this.getMsgId();
+      if (!this.$route.query.isCus) {
+        this.getMsgId();
+      } else {
+        this.getCusMsgId();
+      }
     }
   },
   methods: {
@@ -135,8 +195,36 @@ export default {
           }
         });
     },
+    // 获取详情客户
+    getCusMsgId() {
+      this.$axios
+        .get("/api/enterprise/getbyid", {
+          params: {
+            id: this.$route.query.id
+          }
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            let data = res.data.result
+            this.address = data.enterpriseAddress
+            this.form.customerContact = data.enterpriseContact
+            this.email = data.enterpriseEmail
+            this.form.customerName = data.enterpriseName
+            this.form.customerPhone = data.enterprisePhone
+            this.customerRegisterImage = data.enterpriseRegisterImage
+            this.customerSignImage = data.enterpriseSignImage
+            this.selectCate = data.enterpriseAttributes
+            this.goodPro = data.enterpriseDescription
+            this.$set(this, 'otherform', data)
+          } else {
+            let msg = res.data.msg || "获取详情失败";
+            this.showToast(msg);
+          }
+        });
+    },
     // 提交表单
     submit() {
+      let emailReg = /^[\w]{1,16}@+\w{1,15}.\w{2,5}$/
       for (let i in this.form) {
         if (this.form[i] == "" && typeof this.form[i] != "boolean") {
           this.form[i] = null;
@@ -147,26 +235,34 @@ export default {
           }
         }
       }
-      this.form.customerRegisterImage =
-        this.customerRegisterImage == null ?
-        undefined :
-        this.customerRegisterImage;
-      this.form.customerSignImage =
-        this.customerSignImage == null ? undefined : this.customerSignImage;
-      if (
-        this.customerRegisterImage == null &&
-        this.customerSignImage == null
-      ) {
+      this.form.customerRegisterImage = this.customerRegisterImage == null ? undefined : this.customerRegisterImage;
+      this.form.customerSignImage = this.customerSignImage == null ? undefined : this.customerSignImage;
+      if (this.customerRegisterImage == null && this.customerSignImage == null) {
         this.showToast("请上传《客户信息登记表》");
         return false;
       }
-      if (!this.$route.query.id) {
-        this.form["companyId"] = this.$route.query.companyId;
-        this.send("/api/customer/save");
-      } else {
-        delete this.form["createTime"];
-        this.send("/api/customer/update");
+      if (this.selectCate == '') {
+        this.showToast("请选择类别");
+        return false;
       }
+      if (this.email != '' && !emailReg.test(this.email)) {
+        this.showToast("请填写正确的邮箱");
+        return false;
+      }
+      if (this.$route.name == 'm-customerReg') {
+        this.cusReg()
+      } else if (this.$route.query.isCus) {
+        this.changeCus()
+      } else {
+        if (!this.$route.query.id) {
+          this.form["companyId"] = this.$route.query.companyId;
+          this.send("/api/customer/save");
+        } else {
+          delete this.form["createTime"];
+          this.send("/api/customer/update");
+        }
+      }
+
     },
     // 发送表单
     send(url) {
@@ -175,7 +271,63 @@ export default {
           let msg = this.$route.query.id ? "修改成功" : "添加成功";
           this.showToast(msg);
           setTimeout(() => {
-            this.$emit("sendSuccess");
+            this.$emit("sendSuccess", res.data.result);
+          }, 2000);
+        } else {
+          let msg = res.data.msg || "添加失败";
+          this.showToast(msg);
+        }
+      });
+    },
+    // 鞋企注册
+    cusReg() {
+      let form = {
+        "enterpriseAddress": this.address,
+        "enterpriseAttributes": this.selectCate,
+        "enterpriseContact": this.form.customerContact,
+        "enterpriseEmail": this.email,
+        "enterpriseDescription": this.goodPro,
+        "enterpriseName": this.form.customerName,
+        "enterpriseOpenid": this.$route.query.Openid,
+        "enterprisePhone": this.form.customerPhone,
+        "enterpriseRegisterImage": this.form.customerRegisterImage
+      }
+      this.$axios.post('/api/enterprise/save', form).then(res => {
+        if (res.data.code == 200) {
+          let msg = this.$route.query.id ? "修改成功" : "添加成功";
+          this.showToast(msg);
+          setTimeout(() => {
+            this.$emit("sendSuccess", res.data.result);
+          }, 2000);
+        } else {
+          let msg = res.data.msg || "添加失败";
+          this.showToast(msg);
+        }
+      });
+    },
+    // 鞋企修改
+    changeCus() {
+      let form = {
+        "enterpriseAddress": this.address,
+        "enterpriseAttributes": this.selectCate,
+        "enterpriseContact": this.form.customerContact,
+        "enterpriseEmail": this.email,
+        "enterpriseDescription": this.goodPro,
+        "enterpriseName": this.form.customerName,
+        "enterpriseOpenid": this.$route.query.Openid,
+        "enterprisePhone": this.form.customerPhone,
+        "enterpriseRegisterImage": this.form.customerRegisterImage,
+        "id": this.otherform.id,
+        "isRegister": this.otherform.isRegister,
+        "isSign": this.otherform.isSign,
+        "enterpriseOpenid" :this.otherform.enterpriseOpenid
+      }
+      this.$axios.post('/api/enterprise/update', form).then(res => {
+        if (res.data.code == 200) {
+          let msg = this.$route.query.id ? "修改成功" : "添加成功";
+          this.showToast(msg);
+          setTimeout(() => {
+            this.$emit("sendSuccess", this.$route.query.id);
           }, 2000);
         } else {
           let msg = res.data.msg || "添加失败";
@@ -206,6 +358,11 @@ export default {
       }
       return true;
     },
+    // 选择类别
+    choose(label) {
+      this.selectCate = label
+      this.showSelect = false
+    },
     // 显示toast
     showToast(message) {
       this.showMsg.toast = true;
@@ -222,7 +379,7 @@ export default {
       if (!isLt2M) {
         this.showToast("图片大小不能超过 10MB!");
       }
-      if(isLt2M){
+      if (isLt2M) {
         this[name] = true
       }
       return isLt2M;
@@ -269,6 +426,15 @@ export default {
 
         &:last-child {
           margin-bottom: pxToRem(76);
+        }
+
+        .select {
+          width: 100%;
+          height: pxToRem(80);
+          line-height: pxToRem(80);
+          background-color: #ffffff;
+          border: solid pxToRem(2) #bfbfbf;
+          text-indent: pxToRem(28);
         }
       }
 
@@ -354,7 +520,53 @@ export default {
         input {
           width: 76%;
         }
+
+        .select {
+          width: 76%;
+        }
       }
+    }
+  }
+
+  .select-con {
+    .back {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      z-index: 9;
+      top: 0;
+      left: 0;
+      background-color: rgba($color: #000000, $alpha: 0.7);
+    }
+
+    .selects {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      // height: pxToRem(450);
+      z-index: 10;
+      background-color: white;
+
+      h6 {
+        @include font-dpr(28);
+        height: pxToRem(80);
+        line-height: pxToRem(80);
+        padding: 0 pxToRem(50);
+        text-align: right;
+      }
+
+      .ps {
+        height: pxToRem(400);
+        overflow-y: auto;
+
+        p {
+          height: pxToRem(80);
+          line-height: pxToRem(80);
+          padding: 0 pxToRem(50);
+        }
+      }
+
     }
   }
 

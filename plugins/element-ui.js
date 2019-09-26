@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import {
-  Upload
+  Upload,
+  Select,
+  Option
 } from 'element-ui'
 
 export default () => {
   Vue.use(Upload)
+  Vue.use(Select)
+  Vue.use(Option)
 }
