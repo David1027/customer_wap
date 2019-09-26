@@ -186,9 +186,18 @@ export default {
         })
         .then(res => {
           if (res.data.code == 200) {
-            this.$set(this, "form", res.data.result);
-            this.customerRegisterImage = this.form.customerRegisterImage;
-            this.customerSignImage = this.form.customerSignImage;
+            let data = res.data.result
+            this.customerRegisterImage = data.customerRegisterImage;
+            this.customerSignImage = data.customerSignImage;
+            this.address = data.customerAddress
+            this.email = data.customerEmail
+            this.selectCate = data.customerAttributes
+            this.goodPro = data.customerDescription
+            delete  data['customerAddress']
+            delete  data['customerEmail']
+            delete  data['customerAttributes']
+            delete  data['customerDescription']
+            this.$set(this, "form", data);
           } else {
             let msg = res.data.msg || "获取详情失败";
             this.showToast(msg);
@@ -256,9 +265,17 @@ export default {
       } else {
         if (!this.$route.query.id) {
           this.form["companyId"] = this.$route.query.companyId;
+          this.form["customerAttributes"] = this.selectCate;
+          this.form["customerDescription"] = this.goodPro;
+          this.form["customerEmail"] = this.email;
+          this.form["customerAddress"] = this.address
           this.send("/api/customer/save");
         } else {
           delete this.form["createTime"];
+          this.form["customerAttributes"] = this.selectCate;
+          this.form["customerDescription"] = this.goodPro;
+          this.form["customerEmail"] = this.email;
+          this.form["customerAddress"] = this.address
           this.send("/api/customer/update");
         }
       }

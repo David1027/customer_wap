@@ -35,6 +35,18 @@
               <span class="key">联系方式:</span>{{ detail.customerPhone }}
             </p>
             <p class="text_item">
+              <span class="key">企业邮箱:</span>{{ detail.customerEmail }}
+            </p>
+            <p class="text_item">
+              <span class="key">公司地址:</span>{{ detail.customerAddress }}
+            </p>
+            <p class="text_item">
+              <span class="key">鞋类别:</span>{{ detail.customerAttributes }}
+            </p>
+            <p class="text_item">
+              <span class="key">优势产品:</span>{{ detail.customerDescription }}
+            </p>
+            <p class="text_item">
               <span class="key">登记时间:</span>{{ detail.createTime }}
             </p>
           </div>
