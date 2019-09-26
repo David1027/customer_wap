@@ -115,16 +115,17 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           self.agencyTotal = res.data.result.total
-          if (!res.data.result.items.length > 0) {
-            self.agencyCurr = self.agencyCurr - 1< 0 ? 0 : self.agencyCurr--
-          }
-          let arrayList
-          if(self.agencyCurr == 0){
-            arrayList = res.data.result.items
+          if (res.data.result.items.length == 0) {
+            self.agencyCurr = self.agencyCurr - 1< 0 ? 0 : self.agencyCurr - 1
           }else{
-            arrayList = self.agencyList.concat(res.data.result.items)
+            let arrayList
+            if(self.agencyCurr == 0){
+              arrayList = res.data.result.items
+            }else{
+              arrayList = self.agencyList.concat(res.data.result.items)
+            }
+            self.$set(self, 'agencyList', arrayList)
           }
-          self.$set(self, 'agencyList', arrayList)
         } else {
           self.message = res.data.msg
           self.isShow.toast = true
@@ -144,16 +145,17 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           self.clientTotal = res.data.result.total
-          if (!res.data.result.items.length > 0) {
-            self.clientCurr = self.clientCurr - 1< 0 ? 0 : self.clientCurr--
-          }
-          let arrayList
-          if(self.agencyCurr == 0){
-            arrayList = res.data.result.items
+          if (res.data.result.items.length == 0) {
+            self.clientCurr = self.clientCurr - 1 < 0 ? 0 : self.clientCurr - 1
           }else{
-            arrayList = self.clientList.concat(res.data.result.items)
+            let arrayList
+            if(self.clientCurr == 0){
+              arrayList = res.data.result.items
+            }else{
+              arrayList = self.clientList.concat(res.data.result.items)
+            }
+            self.$set(self, 'clientList', arrayList)
           }
-          self.$set(self, 'clientList', arrayList)
         } else {
           self.message = res.data.msg
           self.isShow.toast = true
@@ -173,16 +175,17 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           self.curTotal = res.data.result.total
-          if (!res.data.result.items.length > 0) {
-            self.cusCurr = self.cusCurr - 1 < 0 ? 0 : self.cusCurr--
-          }
-          let arrayList
-          if(self.agencyCurr == 0){
-            arrayList = res.data.result.items
+          if (res.data.result.items.length == 0) {
+            self.cusCurr = self.cusCurr - 1 < 0 ? 0 : self.cusCurr - 1
           }else{
-            arrayList = self.curList.concat(res.data.result.items)
+            let arrayList
+            if(self.cusCurr == 0){
+              arrayList = res.data.result.items
+            }else{
+              arrayList = self.curList.concat(res.data.result.items)
+            }
+            self.$set(self, 'curList', arrayList)
           }
-          self.$set(self, 'curList', arrayList)
         } else {
           self.message = res.data.msg
           self.isShow.toast = true

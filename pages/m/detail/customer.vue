@@ -61,7 +61,7 @@
       <div class="button item1">
         <span @click="$router.push({ path: '/m/addCustome', query: {isCus: true,id: $route.query.id}})">编辑</span>
       </div>
-      <div class="button">
+      <div class="button" v-if="$store.state.app.isSuperManager">
         <span @click="screenDialog = true">删除</span>
       </div>
     </div>
