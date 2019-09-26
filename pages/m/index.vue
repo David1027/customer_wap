@@ -116,9 +116,14 @@ export default {
         if (res.data.code === 200) {
           self.agencyTotal = res.data.result.total
           if (!res.data.result.items.length > 0) {
-            self.agencyCurr--
+            self.agencyCurr = self.agencyCurr - 1< 0 ? 0 : self.agencyCurr--
           }
-          let arrayList = self.agencyList.concat(res.data.result.items)
+          let arrayList
+          if(self.agencyCurr == 0){
+            arrayList = res.data.result.items
+          }else{
+            arrayList = self.agencyList.concat(res.data.result.items)
+          }
           self.$set(self, 'agencyList', arrayList)
         } else {
           self.message = res.data.msg
@@ -140,9 +145,14 @@ export default {
         if (res.data.code === 200) {
           self.clientTotal = res.data.result.total
           if (!res.data.result.items.length > 0) {
-            self.clientCurr--
+            self.clientCurr = self.clientCurr - 1< 0 ? 0 : self.clientCurr--
           }
-          let arrayList = self.clientList.concat(res.data.result.items)
+          let arrayList
+          if(self.agencyCurr == 0){
+            arrayList = res.data.result.items
+          }else{
+            arrayList = self.clientList.concat(res.data.result.items)
+          }
           self.$set(self, 'clientList', arrayList)
         } else {
           self.message = res.data.msg
@@ -164,9 +174,14 @@ export default {
         if (res.data.code === 200) {
           self.curTotal = res.data.result.total
           if (!res.data.result.items.length > 0) {
-            self.cusCurr--
+            self.cusCurr = self.cusCurr - 1 < 0 ? 0 : self.cusCurr--
           }
-          let arrayList = self.clientList.concat(res.data.result.items)
+          let arrayList
+          if(self.agencyCurr == 0){
+            arrayList = res.data.result.items
+          }else{
+            arrayList = self.curList.concat(res.data.result.items)
+          }
           self.$set(self, 'curList', arrayList)
         } else {
           self.message = res.data.msg
